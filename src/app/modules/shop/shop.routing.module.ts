@@ -20,6 +20,27 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'categories',
+        loadChildren: () =>
+          import('./categories/categories.module').then(
+            (module) => module.CategoriesModule
+          ),
+      },
+      {
+        path: 'shopping-cart',
+        loadChildren: () =>
+          import('./shopping-cart/shopping-cart.module').then(
+            (module) => module.ShoppingCartModule
+          ),
+      },
+      {
+        path: 'shipping-information',
+        loadChildren: () =>
+          import('./shipping-information/shipping-information.module').then(
+            (module) => module.ShippingInformationModule
+          ),
+      },
+      {
         path: '**',
         redirectTo: 'home',
         pathMatch: 'full',
@@ -32,5 +53,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-
 export class ShopRoutingModule {}
