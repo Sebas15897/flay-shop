@@ -2,21 +2,23 @@ import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-catalog',
-  templateUrl: './catalog.component.html',
-  styleUrls: ['./catalog.component.scss']
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css']
 })
-export class CatalogComponent implements AfterViewInit {
-  @ViewChild('optionsHeader') optionsHeader!: ElementRef;
+export class ProductComponent {
+  @ViewChild('carousel') carouselImages!: ElementRef;
   selectedOption: number | null = null;
+  selectedOptionSecond: number | null = null;
+  isOpen: boolean = false;
 
   constructor(
     private router: Router,
   ) {}
 
   ngAfterViewInit() {
-    if (this.optionsHeader) {
-      const container = this.optionsHeader.nativeElement;
+    if (this.carouselImages) {
+      const container = this.carouselImages.nativeElement;
 
       container.addEventListener('wheel', (event: WheelEvent) => {
         if (event.deltaY !== 0) {
@@ -27,11 +29,15 @@ export class CatalogComponent implements AfterViewInit {
     }
   }
 
+  toggleDescription(): void {
+    this.isOpen = !this.isOpen;
+  }
+
   selectOption(option: number): void {
     this.selectedOption = option;
   }
 
-  redirectToProduct(){
-    this.router.navigate(['/shop/product']);
+  selectOptionSecond(option: number): void {
+    this.selectedOptionSecond = option;
   }
 }

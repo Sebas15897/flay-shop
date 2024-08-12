@@ -13,6 +13,11 @@
     padding: 15px 30px;
 }
 
+.whiter{
+    background-color: white;
+    color: black;
+}
+
 .mainHeader h2{
     font-size: 18px;
     font-weight: bold;
@@ -41,13 +46,23 @@
     position: absolute;
     top: -9px;
     right: -11px;
+    user-select: none;
 }
 
 .headerText{
     user-select: none;
 }
 
-@media (min-width: 500px) {
+.middleText{
+    width: 100%;
+    text-align: center;
+}
+
+.blackCart{
+    width: 36px;
+}
+
+@media only screen and (min-width: 500px) {
     .mainHeader{
         padding: 14px 45px;
     }

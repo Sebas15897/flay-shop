@@ -7,6 +7,10 @@
 <main>
     <router-outlet></router-outlet>
 </main>
-<footer>
+<footer *ngIf="!showAlternativeFooter">
     <app-footer></app-footer>
+</footer>
+<!-- Footer carrito de compras -->
+<footer *ngIf="showAlternativeFooter">
+    <app-footer-cart></app-footer-cart>
 </footer>

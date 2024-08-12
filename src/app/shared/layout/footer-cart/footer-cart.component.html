@@ -1,0 +1,23 @@
+<div class="footer">
+    <div *ngIf="!cartButtons" class="quantityProduct">
+        <div class="minus">
+            <img src="/assets/minusIcon.svg" alt="">
+        </div>
+        <div class="counter">
+            <span class="quantity"><b>20</b></span>
+            <span class="units">Unidades</span>
+        </div>
+        <div class="plus">
+            <img src="/assets/plusGreenIcon.svg" alt="">
+        </div>
+    </div>
+    <div *ngIf="cartButtons" class="moreProducts">
+        Más productos
+    </div>
+    <div *ngIf="!cartButtons" class="total">
+        <span>Agregar $ 850.000</span>
+    </div>
+    <div *ngIf="cartButtons" class="total">
+        <span>Comprar $ 1.850.000</span>
+    </div>
+</div>

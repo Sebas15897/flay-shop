@@ -20,6 +20,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'product',
+        loadChildren: () =>
+          import('./product/product.module').then(
+            (module) => module.ProductModule
+          ),
+      },
+      {
         path: 'categories',
         loadChildren: () =>
           import('./categories/categories.module').then(

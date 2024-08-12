@@ -6,9 +6,10 @@ import { HeaderComponent } from './layout/header/header.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './layout/footer/footer.component';
 import { SidebarService } from './layout/services/aside.service';
+import { FooterCartComponent } from './layout/footer-cart/footer-cart.component';
 
 @NgModule({
-  declarations: [LayoutComponent, SidebarComponent, HeaderComponent, FooterComponent],
+  declarations: [LayoutComponent, SidebarComponent, HeaderComponent, FooterComponent, FooterCartComponent],
   imports: [CommonModule, RouterModule],
   exports: [LayoutComponent],
   providers: [SidebarService],

@@ -1,1 +1,54 @@
-<p>shopping-cart works!</p>
+<div class="shortResume">
+    <span>
+        4 Productos agregados <b>$ 152.000</b>
+    </span>
+    <div class="deleteAll">
+        <img src="/assets/trash.png" alt="">
+        Todo
+    </div>
+</div>
+<div class="products">
+    <div class="product">
+        <div class="titleAndImage">
+            <img class="imageProduct" src="/assets/productMini.png" alt="">
+            <div class="productInfo">
+                <h3>
+                    Arena Folica Edición Especial
+                </h3>
+                <p>5 Kilos</p>
+            </div>
+            <img src="/assets/trash.png" alt="">
+        </div>
+        <div class="priceAndUnits">
+            <span>$145.000</span>
+            <div class="quantityProduct">
+                <div class="minus">
+                    <img src="/assets/moreBlack.svg" alt="">
+                </div>
+                <div class="counter">
+                    <span class="quantity"><b>20</b></span>
+                    <span class="units">Unidades</span>
+                </div>
+                <div class="plus">
+                    <img src="/assets/plusGreenIcon.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="descriptionContainer">
+            <div class="description">
+                <img src="/assets/arrowDown.png" alt="Toggle" [ngClass]="{'descriptionOpen': isOpen}" (click)="toggleDescription()" [src]="isOpen ? '/assets/arrowUp.png' : '/assets/arrowDown.png'"/>
+            </div>
+            <div class="descriptionContent" [ngClass]="{'open': isOpen}">
+                <div class="tags">
+                    <div class="tag">
+                        Talla 38
+                    </div>
+                    <div class="tag">
+                        Rojo
+                    </div>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non nibh ac risus commodo congue hendrerit ut tellus. Ut accumsan libero et finibus tristique. Morbi at tempus odio, non luctus enim. Donec tempor eleifend justo ac euismod. Integer nec tempus elit, vel tristique leo. Morbi luctus ex non dapibus scelerisque.</p>
+            </div>
+        </div>
+    </div>
+</div>
