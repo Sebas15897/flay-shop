@@ -5,11 +5,13 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './layout/footer/footer.component';
+import { SidebarService } from './layout/services/aside.service';
 
 @NgModule({
   declarations: [LayoutComponent, SidebarComponent, HeaderComponent, FooterComponent],
   imports: [CommonModule, RouterModule],
   exports: [LayoutComponent],
+  providers: [SidebarService],
 })
 
 export class SharedModule {}

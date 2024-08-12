@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '../../shared/layout/layout.component';
-import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   {

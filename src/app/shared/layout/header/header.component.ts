@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { SidebarService  } from '../services/aside.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private sidebarService : SidebarService
   ) {}
 
   redirectToHome(){
@@ -18,5 +20,9 @@ export class HeaderComponent {
 
   redirectToCart(){
     this.router.navigate(['/shop/shopping-cart']);
+  }
+
+  toggleSidebar() {
+    this.sidebarService.toggleSidebar();
   }
 }

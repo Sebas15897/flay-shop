@@ -1,0 +1,180 @@
+.hero {
+    width: 100%;
+    height: 280px;
+    background-image: linear-gradient( to bottom, #000000a1, #0000002d, #00000083), url("../../../../assets/heroImage.png");
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    color: white;
+    padding-top: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: end;
+    position: relative;
+    overflow: hidden;
+}
+
+.heroTitle{
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 5%;
+}
+
+.optionsHeader {
+    width: 92%;
+    display: flex;
+    column-gap: 5px;
+    margin-bottom: 18px;
+    margin-left: 5%;
+    margin-right: 3%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+}
+
+.optionsHeader::-webkit-scrollbar {
+    display: none; /* Para Chrome, Safari, y Edge */
+}
+
+.option {
+    border: 2px solid white;
+    border-radius: 18px;
+    min-width: 110px;
+    padding: 1px 10px 5px 10px;
+    color: black;
+    background-color: white;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.option.selected {
+    background-color: black;
+    color: white;
+    border: 2px solid #AEF8D9;
+}
+
+.searchContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.searchLabel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.searchInput {
+    padding: 8px 40px 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 4px 6px rgb(196, 196, 196);
+    border-radius: 18px;
+    outline: none;
+    width: 100%;
+}
+
+.searchIcon {
+    position: absolute;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.productsContainer{
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    background-color: #F6F6F6;
+    row-gap: 3px;
+    margin: 3px auto;
+    position: relative;
+}
+
+.containerCategoryDiv{
+    width: 100%;
+}
+
+.categoryDiv{
+    width: max-content;
+    padding: 0px 15px 3px 15px;
+    background-color: #AEF8D9;
+    border-radius: 18px;
+    margin-bottom: 8px;
+}
+
+.productRow{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.product{
+    width: 49%;
+    height: 360px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.product h2{
+    width: calc(100% - 16px);
+    height: 40px;
+    font-size: 16px;
+    font-weight: bolder;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+    margin-top: 6px;
+    margin-left: 16px;
+}
+
+.product span{
+    width: calc(100% - 16px);
+    font-size: 16px;
+    text-align: start;
+    margin-top: 6px;
+    margin-left: 16px;
+}
+
+.product img{
+    width: 100%;
+    height: 65%;
+    object-fit: contain;
+    object-position: center;
+}
+
+.productState {
+    position: absolute;
+    bottom: 110px;
+    left: 10px;
+    border-radius: 18px;
+    background-color: #FFEFC0;
+    padding: 2px 15px 6px 15px;
+    font-size: 14px;
+    z-index: 1;
+}
+
+@media (min-width: 500px) {
+    .searchContainer{
+        width: 60%;
+        margin: 20px auto;
+    }
+}
