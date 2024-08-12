@@ -1,0 +1,30 @@
+<div class="footer" [ngClass]="{shipping : shipping}">
+    <div *ngIf="shipping" class="values">
+        <p>Costo de domicilios $10.000</p>
+        <p><b>TOTAL : $145.000</b></p>
+    </div>
+    <div *ngIf="normal" class="quantityProduct">
+        <div class="minus">
+            <img src="/assets/minusIcon.svg" alt="">
+        </div>
+        <div class="counter">
+            <span class="quantity"><b>20</b></span>
+            <span class="units">Unidades</span>
+        </div>
+        <div class="plus">
+            <img src="/assets/plusGreenIcon.svg" alt="">
+        </div>
+    </div>
+    <div *ngIf="cartButtons || shipping" class="moreProducts" (click) = "redirecToCatalog()">
+        Más productos
+    </div>
+    <div *ngIf="normal" class="total">
+        <span>Agregar $ 850.000</span>
+    </div>
+    <div *ngIf="cartButtons" class="total" (click) = "redirecToShipping()">
+        <span>Comprar $1.850.000</span>
+    </div>
+    <div *ngIf="shipping" class="total" (click) = "redirecToShipping()">
+        <span>Terminar compra</span> <img src="/assets/WhatsappIcon.png" alt="">
+    </div>
+</div>

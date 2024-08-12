@@ -1,0 +1,81 @@
+.mainHeader{
+    position: fixed;
+    z-index: 1000000;
+    top: 0;
+    left: 0 ;
+    width: 100vw;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    background-color: #010913b9;
+    color: white;
+    padding: 15px 25px;
+    user-select: none;
+}
+
+.whiter{
+    background-color: white;
+    color: black;
+}
+
+.mainHeader h2{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.rightHeader{
+    position: relative;
+    cursor: pointer;
+}
+
+.leftHeader{
+    display: flex;
+    column-gap: 12px;
+    cursor: pointer;
+}
+
+.leftWhiteHeader{
+    display: flex;
+    column-gap: 2px;
+    cursor: pointer;
+}
+
+.leftWhiteHeader span{
+    margin-top: 2px;
+}
+
+.counter{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #AEF8D9;
+    text-align: center;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    position: absolute;
+    top: -9px;
+    right: -11px;
+    user-select: none;
+}
+
+.headerText{
+    user-select: none;
+}
+
+.middleText{
+    width: 89%;
+    text-align: center;
+    position: fixed;
+}
+
+.blackCart{
+    width: 36px;
+}
+
+@media only screen and (min-width: 500px) {
+    .mainHeader{
+        padding: 14px 45px;
+    }
+}

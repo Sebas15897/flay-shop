@@ -1,1 +1,43 @@
-<p>sidebar works!</p>
+<div [class.visible]="isVisible" class="asideContainer" (click)="toggleSidebar()">
+    <aside [class.visible]="isVisible" class="sidebar" (click)="$event.stopPropagation()">
+        <div class="profile">
+            <img src="/assets/logo.png" alt="Profile Image" class="profile-img">
+            <div class="profile-info">
+                <h2>Comida de perros</h2>
+                <p><img src="/assets/locationFooter.png" alt=""><i class="fas fa-map-marker-alt"></i> Calle 145 # 63 - 23 oficina 302</p>
+                <p class="fa-whatsapp"><img src="/assets/whatsappVerde.svg" alt=""><i class="fab"></i> 314458554</p>
+            </div>
+        </div>
+        <nav class="menu">
+            <div class="itemNav first" (click)="redirectToCart()">
+                <div>
+                    <img src="/assets/cartIconBlack.png" alt="carrito">
+                    <div class="counterSideBar">
+                        10
+                    </div>
+                </div>
+                Carrito
+            </div>
+            <hr style="margin-top: -2px;">
+            <div class="itemNav" (click)="redirectToCatalog()">
+                <img src="/assets/book.png" alt="">
+                Catalogo
+            </div>
+            <hr>
+            <div class="itemNav" (click)="redirectToHome()">
+                <img src="/assets/house.png" alt="">
+                Inicio
+            </div>
+            <hr>
+        </nav>
+        <div class="footer">
+            <div class="footerFirst">
+                <p><img src="/assets/phoneBlack.png" alt="phone"> 601-000-000</p>
+                <p><img src="/assets/webPageIcon.png" alt="web"> <b>www.comercio.com</b></p>
+            </div>
+            <div class="footerSecond">
+                <p>Tu catalogo en minutos con <a href="#">NIIIO</a></p>
+            </div>
+        </div>
+    </aside>
+</div>

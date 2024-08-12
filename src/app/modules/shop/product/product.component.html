@@ -1,0 +1,82 @@
+<div class="productTitle">
+    <h2>Camisa Oxford regular fit de manga corta</h2>
+    <p>Categoria de producto variante</p>
+</div>
+<div #carousel class="carousel">
+    <div class="carousel-container">
+        <img src="/assets/productHome4.png" alt="Image 1">
+    </div>
+    <div class="carousel-container">
+        <img src="/assets/productHome2.png" alt="Image 2">
+    </div>
+    <div class="carousel-container">
+        <img src="/assets/productHome3.png" alt="Image 3">
+    </div>
+    <div class="carousel-container">
+        <img src="/assets/productHome3.png" alt="Image 4">
+    </div>
+</div>
+<div class="descriptionContainer">
+    <div class="description">
+        <h2>Descripción</h2>
+        <img src="/assets/arrowDown.png" alt="Toggle" [ngClass]="{'descriptionOpen': isOpen}" (click)="toggleDescription()" [src]="isOpen ? '/assets/arrowUp.png' : '/assets/arrowDown.png'"/>
+    </div>
+    <div class="descriptionContent" [ngClass]="{'open': isOpen}">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non nibh ac risus commodo congue hendrerit ut tellus. Ut accumsan libero et finibus tristique. Morbi at tempus odio, non luctus enim. Donec tempor eleifend justo ac euismod. Integer nec tempus elit, vel tristique leo. Morbi luctus ex non dapibus scelerisque. Integer sit amet lorem sit amet lectus fringilla ultrices quis sit amet mauris. </p>
+    </div>
+</div>
+<div class="optionsContainer">
+    <h2>
+        Tallas
+    </h2>
+    <div class="option" [ngClass]="{'selected': selectedOption === 1}" (click)="selectOption(1)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 2}" (click)="selectOption(2)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 3}" (click)="selectOption(3)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 4}" (click)="selectOption(4)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 5}" (click)="selectOption(5)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 6}" (click)="selectOption(6)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 7}" (click)="selectOption(7)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 8}" (click)="selectOption(8)">
+        XL
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOption === 9}" (click)="selectOption(9)">
+        XL
+    </div>
+</div>
+<div class="optionsContainer" style="margin-bottom: 110px;">
+    <h2>
+        Colores
+    </h2>
+    <div class="option" [ngClass]="{'selected': selectedOptionSecond === 1}" (click)="selectOptionSecond(1)">
+        Rojo
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOptionSecond === 2}" (click)="selectOptionSecond(2)">
+        Verde
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOptionSecond === 3}" (click)="selectOptionSecond(3)">
+        Azul
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOptionSecond === 4}" (click)="selectOptionSecond(4)">
+        Amarillo
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOptionSecond === 5}" (click)="selectOptionSecond(5)">
+        Negro
+    </div>
+    <div class="option" [ngClass]="{'selected': selectedOptionSecond === 6}" (click)="selectOptionSecond(6)">
+        Blanco
+    </div>
+</div>
