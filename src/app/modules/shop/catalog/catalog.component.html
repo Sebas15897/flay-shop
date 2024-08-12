@@ -14,8 +14,10 @@
       class="option"
       [ngClass]="{ selected: selectedOption === 2 }"
       (click)="selectOption(2)"
+      routerLink="/shop/catalog"
+      fragment="comida"
     >
-      Buzo
+      Comida
     </div>
     <div
       class="option"
@@ -59,7 +61,7 @@
   </label>
 </div>
 <div class="productsContainer">
-  <div class="productRow">
+  <div class="productRow" id="comida">
     <div class="containerCategoryDiv">
       <div class="categoryDiv">Comida / gatos</div>
     </div>
