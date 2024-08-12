@@ -1,4 +1,3 @@
-import { ViewportScroller } from '@angular/common';
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -13,13 +12,13 @@ export class CatalogComponent implements AfterViewInit {
 
   constructor(
     private router: Router,
-    private viewportScroller: ViewportScroller,
+    private elementRef: ElementRef
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const tree = this.router.parseUrl(this.router.url);
         if (tree.fragment) {
-          this.viewportScroller.scrollToAnchor(tree.fragment);
+          this.scrollToBottom();
         }
       }
     });
@@ -36,6 +35,31 @@ export class CatalogComponent implements AfterViewInit {
         }
       });
     }
+  }
+
+  scrollToBottom(): void {
+    const startPosition = window.pageYOffset;
+    const targetPosition = document.body.scrollHeight - window.innerHeight;
+    const distance = targetPosition - startPosition;
+    const duration = 1000; // Duración de la animación en milisegundos
+    let startTime: number | null = null;
+
+    function animation(currentTime: number) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const run = ease(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+
+    function ease(t: number, b: number, c: number, d: number): number {
+      t /= d / 2;
+      if (t < 1) return c / 2 * t * t + b;
+      t--;
+      return -c / 2 * (t * (t - 2) - 1) + b;
+    }
+
+    requestAnimationFrame(animation);
   }
 
   selectOption(option: number): void {
