@@ -1,5 +1,6 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalog',
@@ -12,7 +13,17 @@ export class CatalogComponent implements AfterViewInit {
 
   constructor(
     private router: Router,
-  ) {}
+    private viewportScroller: ViewportScroller,
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const tree = this.router.parseUrl(this.router.url);
+        if (tree.fragment) {
+          this.viewportScroller.scrollToAnchor(tree.fragment);
+        }
+      }
+    });
+  }
 
   ngAfterViewInit() {
     if (this.optionsHeader) {

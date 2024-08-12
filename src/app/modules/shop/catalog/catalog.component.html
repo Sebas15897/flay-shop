@@ -1,83 +1,104 @@
 <div class="hero">
-    <h1 class="heroTitle">Productos</h1>
-    <div #optionsHeader class="optionsHeader">
-        <div class="option" [ngClass]="{'selected': selectedOption === 1}" (click)="selectOption(1)">
-            Camisetas
-        </div>
-        <div class="option" [ngClass]="{'selected': selectedOption === 2}" (click)="selectOption(2)">
-            Buzo
-        </div>
-        <div class="option" [ngClass]="{'selected': selectedOption === 3}" (click)="selectOption(3)">
-            Pantalones
-        </div>
-        <div class="option" [ngClass]="{'selected': selectedOption === 4}" (click)="selectOption(4)">
-            Zapatos
-        </div>
-        <div class="option" [ngClass]="{'selected': selectedOption === 5}" (click)="selectOption(5)">
-            Gorros
-        </div>
-        <div class="option" [ngClass]="{'selected': selectedOption === 6}" (click)="selectOption(6)">
-            Zapatos
-        </div>
+  <h1 class="heroTitle">Productos</h1>
+  <div #optionsHeader class="optionsHeader">
+    <div
+      class="option"
+      [ngClass]="{ selected: selectedOption === 1 }"
+      (click)="selectOption(1)"
+      routerLink="/shop/catalog"
+      fragment="gatos"
+    >
+      Gatos
     </div>
+    <div
+      class="option"
+      [ngClass]="{ selected: selectedOption === 2 }"
+      (click)="selectOption(2)"
+    >
+      Buzo
+    </div>
+    <div
+      class="option"
+      [ngClass]="{ selected: selectedOption === 3 }"
+      (click)="selectOption(3)"
+    >
+      Pantalones
+    </div>
+    <div
+      class="option"
+      [ngClass]="{ selected: selectedOption === 4 }"
+      (click)="selectOption(4)"
+    >
+      Zapatos
+    </div>
+    <div
+      class="option"
+      [ngClass]="{ selected: selectedOption === 5 }"
+      (click)="selectOption(5)"
+    >
+      Gorros
+    </div>
+    <div
+      class="option"
+      [ngClass]="{ selected: selectedOption === 6 }"
+      (click)="selectOption(6)"
+    >
+      Zapatos
+    </div>
+  </div>
 </div>
 <div class="searchContainer">
-    <label for="searcher" class="searchLabel">
-        <input type="text" id="searcher" placeholder="Buscar por categoría" class="searchInput">
-        <img src="/assets/lupa.png" alt="Buscar" class="searchIcon">
-    </label>
+  <label for="searcher" class="searchLabel">
+    <input
+      type="text"
+      id="searcher"
+      placeholder="Buscar por categoría"
+      class="searchInput"
+    />
+    <img src="/assets/lupa.png" alt="Buscar" class="searchIcon" />
+  </label>
 </div>
 <div class="productsContainer">
-    <div class="productRow">
-        <div class="containerCategoryDiv">
-            <div class="categoryDiv">
-                Comida / gatos
-            </div>
-        </div>
-        <div class="product" (click)="redirectToProduct()">
-            <img src="/assets/productHome4.png" alt="">
-            <h2>Nombre de producto largo ejemplo</h2>
-            <span>$ 135.000</span>
-        </div>
-        <div class="product" (click)="redirectToProduct()">
-            <img src="/assets/productHome1.png" alt="">
-            <div class="productState">
-                Pocas unidades
-            </div>
-            <h2>Nombre de producto extremadamente largoooo ejemplo</h2>
-            <span>$ 135.000</span>
-        </div>
+  <div class="productRow">
+    <div class="containerCategoryDiv">
+      <div class="categoryDiv">Comida / gatos</div>
     </div>
-    <div class="productRow">
-        <div class="containerCategoryDiv">
-            <div class="categoryDiv">
-                Comida / gatos
-            </div>
-        </div>
-        <div class="product" (click)="redirectToProduct()">
-            <img src="/assets/productHome2.png" alt="">
-            <h2>Nombre de producto largo ejemplo</h2>
-            <span>$ 135.000</span>
-        </div>
-        <div class="product" (click)="redirectToProduct()">
-            <img src="/assets/productHome3.png" alt="">
-            <div class="productState">
-                Pocas unidades
-            </div>
-            <h2>Nombre de producto largo ejemplo</h2>
-            <span>$ 135.000</span>
-        </div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome4.png" alt="" />
+      <h2>Nombre de producto largo ejemplo</h2>
+      <span>$ 135.000</span>
     </div>
-    <div class="productRow">
-        <div class="containerCategoryDiv">
-            <div class="categoryDiv">
-                Comida / gatos
-            </div>
-        </div>
-        <div class="product" (click)="redirectToProduct()">
-            <img src="/assets/productHome4.png" alt="">
-            <h2>Nombre de producto largo ejemplo</h2>
-            <span>$ 135.000</span>
-        </div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome1.png" alt="" />
+      <div class="productState">Pocas unidades</div>
+      <h2>Nombre de producto extremadamente largoooo ejemplo</h2>
+      <span>$ 135.000</span>
     </div>
+  </div>
+  <div class="productRow" id="gatos">
+    <div class="containerCategoryDiv">
+      <div class="categoryDiv">Comida / gatos</div>
+    </div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome2.png" alt="" />
+      <h2>Nombre de producto largo ejemplo</h2>
+      <span>$ 135.000</span>
+    </div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome3.png" alt="" />
+      <div class="productState">Pocas unidades</div>
+      <h2>Nombre de producto largo ejemplo</h2>
+      <span>$ 135.000</span>
+    </div>
+  </div>
+  <div class="productRow">
+    <div class="containerCategoryDiv">
+      <div class="categoryDiv">Comida / gatos</div>
+    </div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome4.png" alt="" />
+      <h2>Nombre de producto largo ejemplo</h2>
+      <span>$ 135.000</span>
+    </div>
+  </div>
 </div>
