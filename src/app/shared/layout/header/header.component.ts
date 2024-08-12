@@ -45,7 +45,7 @@ export class HeaderComponent {
       this.title = 'Canasta de compras';
       this.showBackButton = true;
       this.cartButton = false;
-    } else if (currentRoute.includes('/shop/shipping-cart')) {
+    } else if (currentRoute.includes('/shop/shipping-information')) {
       this.title = 'Compras';
       this.showBackButton = true;
       this.cartButton = false;

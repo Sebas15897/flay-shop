@@ -14,14 +14,47 @@
 
 .products{
     margin-bottom: 130px;
+    display: flex;
+    align-items: end;
+    margin-right: 16px;
+    flex-direction: column;
 }
 
 .product{
     background-color: white;
-    width: 80%;
+    width: 88%;
     height: max-content;
     margin-bottom: 20px;
     border-radius: 14px;
+    position: relative;
+}
+
+.product::before{
+    content: "";
+    position: absolute;
+    left: -24px;
+    top: 24px;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 50%;
+    z-index: 3;
+}
+
+.product::after{
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 31px;
+    width: 2px;
+    height: calc(100% + 19px);
+    background-color: black;
+    z-index: 2;
+}
+
+.product:last-child::after{
+    display: none;
 }
 
 .titleAndImage{
@@ -57,6 +90,7 @@
 .productInfo h3{
     font-size: 16px;
     margin-bottom: 0px;
+    font-weight: bolder;
 }
 
 .productInfo p{
@@ -64,12 +98,20 @@
     margin-bottom: 0px;
 }
 
+.priceAndUnits{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    column-gap: 40px;
+    margin-right: 10px;
+}
+
 
 .quantityProduct{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45%;
+    width: 50%;
     border-radius: 28px;
     height: 50px;
     color: #010913;
@@ -99,6 +141,7 @@
     margin-top: -7px;
 }
 
+
 .descriptionContainer{
     width: 95%;
     margin: auto;
@@ -107,10 +150,10 @@
 .description {
     width: 95%;
     margin: auto;
-    margin-top: 30px;
+    margin-top: 8px;
     background-color: white;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
     padding: 10px;
     border-radius: 8px;

@@ -9,6 +9,11 @@
     justify-content: center;
     align-items: center;
     column-gap: 10px;
+    flex-wrap: wrap;
+}
+
+.footer.shipping{
+    height: 140px;
 }
 
 .quantityProduct{
@@ -51,10 +56,11 @@
     border: 2px solid grey;
     color: white;
     column-gap: 6px;
+    cursor: pointer;
 }
 
 .total{
-    width: 45%;
+    width: 48%;
     height: 50px;
     background-color: #AEF8D9;
     border-radius: 28px;
@@ -63,4 +69,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
+
+.values{
+    width: 100%;
+    height: 50px;
+    color: white;
+    margin-left: 18px;
+}
+
+.values p{
+    margin-bottom: 1px;
 }

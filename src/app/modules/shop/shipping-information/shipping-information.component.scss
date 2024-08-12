@@ -1,0 +1,142 @@
+.topButtons{
+    width: 96%;
+    margin: auto;
+    margin-top: 105px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.buttonClient{
+    width: 48%;
+    height: 65px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #D7D7D7;
+    background-color: white;
+}
+
+.buttonClient.active{
+    border: none;
+    background-color: #BBF2DB;
+}
+
+.buttonClient img{
+    width: 23px;
+    height: 21px;
+}
+
+.title{
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.card{
+    background-color: white;
+    width: 94%;
+    margin: auto;
+}
+
+.input{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.input p{
+    margin-bottom: 0px;
+    font-weight: 600;
+}
+
+input{
+    width: 55%;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    background-color: #EDEDED;
+    padding: 0px 10px 0px 8px;
+    color: #A7A7A7;
+}
+
+.date{
+    width: 55%;
+    height: 50px;
+    border-radius: 5px;
+    border: 2px solid #AEF8D9;
+    background-color: white;
+    padding: 0px 10px 0px 8px;
+    color: black;
+    outline: none;
+}
+
+select{
+    width: 55%;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    background-color: #141D2C;
+    padding: 0px 10px 0px 8px;
+    color: white;
+}
+
+.file{
+    width: 55%;
+    height: 50px;
+    border-radius: 5px;
+    border: 2px solid #AEF8D9;
+    background-color: white;
+    padding: 0px 10px 0px 8px;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#ticket{
+    display: none;
+}
+
+.nequiQr{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    padding-right: 12px;
+    position: relative;
+}
+
+.ticket{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.editIcon{
+    position: absolute;
+    top: -12px;
+    right: 42px;
+}
+
+.trashIcon{
+    position: absolute;
+    top: -12px;
+    right: 5px;
+}

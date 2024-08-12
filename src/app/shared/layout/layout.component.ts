@@ -28,6 +28,6 @@ export class LayoutComponent {
   updateFooter() {
     const currentRoute = this.router.url;
     // Mostrar el footer alternativo solo en las rutas específicas
-    this.showAlternativeFooter = currentRoute == '/shop/product' || currentRoute == '/shop/shopping-cart' || currentRoute == '/shop/shipping-cart';
+    this.showAlternativeFooter = currentRoute == '/shop/product' || currentRoute == '/shop/shopping-cart' || currentRoute == '/shop/shipping-information';
   }
 }
