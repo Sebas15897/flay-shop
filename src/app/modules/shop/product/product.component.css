@@ -23,13 +23,17 @@ p{
     color: #494949;
 }
 
-.carousel {
+.carousel-container-wrapper {
+    position: relative; /* Necesario para posicionar los puntos de manera relativa al contenedor */
     width: 95%;
     margin: auto;
+}
+
+.carousel {
+    width: 100%;
     overflow-x: auto;
     scroll-behavior: smooth;
     white-space: nowrap;
-    position: relative;
     display: flex;
     gap: 10px;
     scrollbar-width: none;
@@ -42,7 +46,11 @@ p{
     display: flex;
     align-items: center;
     background-color: white;
-    flex-shrink: 0; 
+    flex-shrink: 0;
+}
+
+.carousel-container:last-child {
+    margin-right: 30px;
 }
 
 .carousel-container img {
@@ -55,25 +63,33 @@ p{
     display: none;
 }
 
-/* .dot {
-    background-color: #bbb;
-    border: none;
-    border-radius: 50%;
-    display: inline-block;
-    height: 10px;
-    width: 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.carousel-dots {
+    text-align: center;
+    position: relative; /* Cambiado de absolute a relative */
+    bottom: 0; /* Asegúrate de que esté en la parte inferior del contenedor */
+    width: 100%;
+    padding-top: 10px; /* Espacio entre el carrusel y los puntos */
 }
 
-.dot.active {
+.carousel-dots span {
+    display: inline-block;
+    background-color: #bbb;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.carousel-dots span.active {
     background-color: #717171;
-} */
+}
+
 
 .descriptionContainer{
     width: 95%;
     margin: auto;
+    margin-top: -18px;
 }
 
 .description {
@@ -102,25 +118,25 @@ p{
 }
 
 .descriptionContent {
-    display: none;
+    display: block;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.4s ease-out;
     width: 100%;
     margin: auto;
     margin-top: -6px;
     background-color: white;
-    padding: 15px;
-}
-
-.descriptionContent p{
-    color: #494949;
-    font-size: 15px;
+    padding: 0 15px;
 }
 
 .descriptionContent.open {
-    display: block;
-    max-height: 200px;
+    max-height: 500px;
+    padding: 15px;
+}
+
+.descriptionContent p {
+    color: #494949;
+    font-size: 15px;
 }
 
 .optionsContainer{
@@ -159,4 +175,22 @@ p{
 .descriptionOpen{
     width: 18px !important;
     height: 12px !important;
+}
+
+@media (min-width: 500px) {
+    .carousel-container-wrapper{
+        max-width: 500px;
+    }
+
+    .descriptionContainer{
+        max-width: 500px;
+    }
+    
+    .description{
+        max-width: 500px;
+    }
+
+    .optionsContainer{
+        max-width: 500px;
+    }
 }

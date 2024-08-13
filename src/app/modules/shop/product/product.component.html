@@ -2,18 +2,25 @@
     <h2>Camisa Oxford regular fit de manga corta</h2>
     <p>Categoria de producto variante</p>
 </div>
-<div #carousel class="carousel">
-    <div class="carousel-container">
-        <img src="/assets/productHome4.png" alt="Image 1">
+<div class="carousel-container-wrapper">
+    <div #carousel class="carousel">
+        <div class="carousel-container">
+            <img src="/assets/productHome4.png" alt="Image 1">
+        </div>
+        <div class="carousel-container">
+            <img src="/assets/productHome2.png" alt="Image 2">
+        </div>
+        <div class="carousel-container">
+            <img src="/assets/productHome3.png" alt="Image 3">
+        </div>
+        <div class="carousel-container">
+            <img src="/assets/productHome3.png" alt="Image 4">
+        </div>
     </div>
-    <div class="carousel-container">
-        <img src="/assets/productHome2.png" alt="Image 2">
-    </div>
-    <div class="carousel-container">
-        <img src="/assets/productHome3.png" alt="Image 3">
-    </div>
-    <div class="carousel-container">
-        <img src="/assets/productHome3.png" alt="Image 4">
+    <div class="carousel-dots">
+        <span *ngFor="let dot of dots; let i = index"
+            [class.active]="i === currentIndex"
+            (click)="goToSlide(i)"></span>
     </div>
 </div>
 <div class="descriptionContainer">
