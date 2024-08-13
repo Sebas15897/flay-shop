@@ -27,6 +27,9 @@
 .rightHeader{
     position: relative;
     cursor: pointer;
+    width: 64px;
+    display: flex;
+    justify-content: end;
 }
 
 .leftHeader{
