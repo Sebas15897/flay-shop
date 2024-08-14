@@ -73,6 +73,12 @@
     position: fixed;
 }
 
+.middleTextWithoutCart{
+    width: 94%;
+    text-align: center;
+    position: fixed;
+}
+
 .blackCart{
     width: 36px;
 }
