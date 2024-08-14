@@ -58,7 +58,10 @@ hr{
 }
 
 /* @media (min-width: 500px) {
-    .footer{
-        padding: 5% 8%;
+    .values{
+        width: 90%;
+        height: 50px;
+        color: white;
+        margin-left: -54px;
     }
 } */
