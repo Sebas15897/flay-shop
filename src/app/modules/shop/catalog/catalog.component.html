@@ -61,10 +61,10 @@
   </label>
 </div>
 <div class="productsContainer">
-  <div class="productRow" id="comida">
-    <div class="containerCategoryDiv">
-      <div class="categoryDiv">Comida / gatos</div>
-    </div>
+  <div class="containerCategoryDiv">
+    <div class="categoryDiv">Comida / gatos</div>
+  </div>
+  <div class="productRow" #productRow id="comida">
     <div class="product" (click)="redirectToProduct()">
       <img src="/assets/productHome4.png" alt="" />
       <h2>Nombre de producto largo ejemplo</h2>
@@ -76,11 +76,23 @@
       <h2>Nombre de producto extremadamente largoooo ejemplo</h2>
       <span>$ 135.000</span>
     </div>
-  </div>
-  <div class="productRow" id="gatos">
-    <div class="containerCategoryDiv">
-      <div class="categoryDiv">Comida / gatos</div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome1.png" alt="" />
+      <div class="productState">Pocas unidades</div>
+      <h2>Nombre de producto extremadamente largoooo ejemplo</h2>
+      <span>$ 135.000</span>
     </div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome1.png" alt="" />
+      <div class="productState">Pocas unidades</div>
+      <h2>Nombre de producto extremadamente largoooo ejemplo</h2>
+      <span>$ 135.000</span>
+    </div>
+  </div>
+  <div class="containerCategoryDiv">
+    <div class="categoryDiv">Comida / gatos</div>
+  </div>
+  <div class="productRow" #productRow id="gatos">
     <div class="product" (click)="redirectToProduct()">
       <img src="/assets/productHome2.png" alt="" />
       <h2>Nombre de producto largo ejemplo</h2>
@@ -92,11 +104,17 @@
       <h2>Nombre de producto largo ejemplo</h2>
       <span>$ 135.000</span>
     </div>
-  </div>
-  <div class="productRow">
-    <div class="containerCategoryDiv">
-      <div class="categoryDiv">Comida / gatos</div>
+    <div class="product" (click)="redirectToProduct()">
+      <img src="/assets/productHome3.png" alt="" />
+      <div class="productState">Pocas unidades</div>
+      <h2>Nombre de producto largo ejemplo</h2>
+      <span>$ 135.000</span>
     </div>
+  </div>
+  <div class="containerCategoryDiv">
+    <div class="categoryDiv">Comida / gatos</div>
+  </div>
+  <div class="productRow" #productRow>
     <div class="product" (click)="redirectToProduct()">
       <img src="/assets/productHome4.png" alt="" />
       <h2>Nombre de producto largo ejemplo</h2>

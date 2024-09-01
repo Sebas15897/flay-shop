@@ -87,11 +87,13 @@ h2{
     height: 70px;
     border-radius: 15px;
     background-color: white;
-    font-size: 18px;
+    font-size: 13px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    color: #494949;
 }
 
 @media (min-width: 500px) {

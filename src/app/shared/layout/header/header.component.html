@@ -7,7 +7,7 @@
         <img src="/assets/chevron-left.png" alt="" class="logo">
         <span>Volver</span>
     </div>
-    <h2 class="headerText" [class.middleText]="!cartButton">
+    <h2 class="headerText" [class.middleText]="!cartButton" [class.middleTextWithoutCart]="showBackButton">
         {{title}}
     </h2>
     <div *ngIf="cartButton" class="rightHeader">

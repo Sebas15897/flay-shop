@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-catalog',
@@ -8,6 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class CatalogComponent implements AfterViewInit {
   @ViewChild('optionsHeader') optionsHeader!: ElementRef;
+  @ViewChildren('productRow') productRows!: QueryList<ElementRef>;
   selectedOption: number | null = null;
 
   constructor(
@@ -26,13 +27,27 @@ export class CatalogComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.optionsHeader) {
-      const container = this.optionsHeader.nativeElement;
+      const headerContainer = this.optionsHeader.nativeElement;
 
-      container.addEventListener('wheel', (event: WheelEvent) => {
+      headerContainer.addEventListener('wheel', (event: WheelEvent) => {
         if (event.deltaY !== 0) {
-          container.scrollLeft += event.deltaY;
+          headerContainer.scrollLeft += event.deltaY;
           event.preventDefault(); // Evita el desplazamiento vertical por defecto
         }
+      });
+    }
+
+    // Asegúrate de que productRows esté disponible y tenga elementos
+    if (this.productRows) {
+      this.productRows.forEach((row) => {
+        const productRowElement = row.nativeElement;
+
+        productRowElement.addEventListener('wheel', (event: WheelEvent) => {
+          if (event.deltaY !== 0) {
+            productRowElement.scrollLeft += event.deltaY;
+            event.preventDefault(); // Evita el desplazamiento vertical por defecto
+          }
+        });
       });
     }
   }

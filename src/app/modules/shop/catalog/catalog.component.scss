@@ -89,45 +89,50 @@
     pointer-events: none;
 }
 
-.productsContainer{
+.productsContainer {
     width: 100%;
-    max-width: 400px;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 20px;
     background-color: #F6F6F6;
-    row-gap: 3px;
-    margin: 3px auto;
-    position: relative;
+    box-sizing: border-box;
 }
 
-.containerCategoryDiv{
+.containerCategoryDiv {
     width: 100%;
 }
 
-.categoryDiv{
+.categoryDiv {
     width: max-content;
-    padding: 0px 15px 3px 15px;
+    padding: 1px 15px 3px 15px;
     background-color: #AEF8D9;
     border-radius: 18px;
     margin-bottom: 8px;
 }
 
-.productRow{
+.productRow {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    position: relative;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
 }
 
-.product{
-    width: 49%;
-    height: 360px;
+.productRow::-webkit-scrollbar {
+    display: none; /* Para Chrome, Safari y Edge */
+}
+
+.product {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 320px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background-color: white;
     overflow: hidden;
@@ -135,8 +140,8 @@
     cursor: pointer;
 }
 
-.product h2{
-    width: calc(100% - 16px);
+.product h2 {
+    width: calc(100% - 32px);
     height: 40px;
     font-size: 16px;
     font-weight: bolder;
@@ -144,18 +149,24 @@
     text-overflow: ellipsis;
     text-align: start;
     margin-top: 6px;
-    margin-left: 16px;
-}
+    margin-left: 0px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Número de líneas visibles */
+    line-clamp: 2; /* Asegúrate de que este prefijo también esté incluido */
+    box-sizing: border-box;
+}   
 
-.product span{
+.product span {
     width: calc(100% - 16px);
     font-size: 16px;
     text-align: start;
     margin-top: 6px;
     margin-left: 16px;
+    margin-bottom: 20px;
 }
 
-.product img{
+.product img {
     width: 100%;
     height: 65%;
     object-fit: contain;
@@ -165,7 +176,7 @@
 .productState {
     position: absolute;
     bottom: 110px;
-    left: 10px;
+    left: 20px;
     border-radius: 18px;
     background-color: #FFEFC0;
     padding: 2px 15px 6px 15px;
@@ -174,8 +185,13 @@
 }
 
 @media (min-width: 500px) {
-    .searchContainer{
+    .searchContainer {
         width: 60%;
         margin: 20px auto;
+    }
+
+    .productsContainer{
+        max-width: 540px;
+        margin: auto;
     }
 }
