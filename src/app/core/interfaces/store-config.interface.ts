@@ -13,52 +13,47 @@ export interface IDeliveryMethod {
 }
 
 export interface IStore {
+  id: string;
   name: string;
-  email: string;
   address: string;
   phone: string;
+  coverPhrase: null;
+  typeCommerce: ITypeCommerce;
+  category: ICategory[];
+  paymentMethodToStore: PaymentMethodToStore[];
+  socialMediaToStore: SocialMediaToStore[];
+  dispatch: Dispatch[];
+  catalogPhotos: any[];
   urlProfilePhoto: string;
   urlPortraitPhoto: string;
-  legalName: string;
-  typeCommerce: ICity;
-  city: ICity;
-  dispatch: IDispatch;
-  paymentMethodToStore: IPaymentMethodToStore;
-  socialMediaToStore: ISocialMediaToStore;
-  coverPhrase: string;
-  catalogPhotos: ICatalogPhoto[];
 }
 
-export interface ICatalogPhoto {
-  uri: string;
-  store: string;
-}
-
-export interface ICity {
+export interface ICategory {
   id: number;
   name: string;
 }
 
-export interface IDispatch {
-  id: string;
+export interface ITypeCommerce {
+  id: number;
+  name: string;
+}
+
+export interface Dispatch {
   address: string;
-  observation: string;
-  local: string;
-  national: string;
-  international: string;
 }
 
-export interface IPaymentMethodToStore {
+export interface PaymentMethodToStore {
   id: number;
-  paymentMethodId: number;
-  storeId: string;
-  enabled: boolean;
+  paymentMethod: ITypeCommerce;
 }
 
-export interface ISocialMediaToStore {
-  id: number;
+export interface SocialMediaToStore {
   socialMediaId: number;
-  url: string;
+  socialMedia: SocialMedia;
+}
+
+export interface SocialMedia {
+  id: number;
   name: string;
-  enabled: boolean;
+  image: string;
 }

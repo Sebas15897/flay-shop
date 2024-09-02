@@ -22,7 +22,6 @@ export class ProductStateModel {
     selectedProduct: null,
   },
 })
-
 @Injectable()
 export class ProductState {
   constructor(private productService: ProductService) {}
@@ -43,8 +42,10 @@ export class ProductState {
     { tenantId }: GetProductsByStoreAction
   ) {
     return this.productService.getProductByStore(tenantId).pipe(
-      tap((products: IProduct[]) => {
-        ctx.dispatch(new SetProductsAction(products));
+      tap((resp) => {
+        if (resp && resp.data) {
+          ctx.dispatch(new SetProductsAction(resp.data as IProduct[]));
+        }
       })
     );
   }
@@ -62,12 +63,18 @@ export class ProductState {
   }
 
   @Action(SetProductsAction)
-  setProducts(ctx: StateContext<ProductStateModel>, { products }: SetProductsAction) {
+  setProducts(
+    ctx: StateContext<ProductStateModel>,
+    { products }: SetProductsAction
+  ) {
     ctx.patchState({ products });
   }
 
   @Action(SetProductAction)
-  setProduct(ctx: StateContext<ProductStateModel>, { product }: SetProductAction) {
+  setProduct(
+    ctx: StateContext<ProductStateModel>,
+    { product }: SetProductAction
+  ) {
     ctx.patchState({ selectedProduct: product });
   }
 }

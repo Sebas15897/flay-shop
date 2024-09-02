@@ -1,19 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SidebarService } from '../services/aside.service';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { IStore } from '../../../core/interfaces/store-config.interface';
+import { Store } from '@ngxs/store';
+import { StoreState } from '../../../core/store/store/store.state';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+
+export class SidebarComponent implements OnInit, OnDestroy {
+  private destroy: Subject<boolean> = new Subject<boolean>();
   isVisible = false;
+
+  shop$: Observable<IStore> = new Observable();
+  shop: IStore = null;
 
   constructor(
     private router: Router,
-    private sidebarService: SidebarService
-  ) {}
+    private sidebarService: SidebarService,
+    private store: Store,
+  ) {
+    this.shop$ = this.store.select(StoreState.getStore);
+  }
 
   ngOnInit() {
     this.sidebarService.sidebarVisible$.subscribe(isVisible => {
@@ -24,6 +36,13 @@ export class SidebarComponent implements OnInit {
         document.body.style.overflow = '';
       }
     });
+    this.subscribeState();
+  }
+
+  subscribeState() {
+    this.shop$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      this.shop = resp;
+    });
   }
 
   toggleSidebar() {
@@ -32,7 +51,7 @@ export class SidebarComponent implements OnInit {
 
   redirectToCart(){
     this.router.navigate(['/shop/shopping-cart']);
-    
+
     if (this.isVisible == true) {
       this.toggleSidebar();
     }
@@ -52,5 +71,10 @@ export class SidebarComponent implements OnInit {
     if (this.isVisible == true) {
       this.toggleSidebar();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy.next(true);
+    this.destroy.unsubscribe();
   }
 }

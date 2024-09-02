@@ -34,8 +34,8 @@ export class CategoryState {
     { tenantId }: GetProductCategoriesByShopAction
   ) {
     return this.categoryService.getProductCategoriesByShop(tenantId).pipe(
-      tap((categories: ICategory[]) => {
-        ctx.dispatch(new SetProductCategoriesAction(categories));
+      tap((resp) => {
+        ctx.dispatch(new SetProductCategoriesAction(resp.data as ICategory[]));
       })
     );
   }

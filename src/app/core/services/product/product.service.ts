@@ -6,6 +6,7 @@ import {
   IProduct,
   IProductByIdPayload,
 } from '../../interfaces/product.interface';
+import { IDefaultResponse } from '../../interfaces/default-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,10 @@ import {
 export class ProductService {
   constructor(private httpClient: HttpClient, private appConfig: AppConfig) {}
 
-  getProductByStore(tenantId: string): Observable<IProduct[]> {
-    return this.httpClient.get<IProduct[]>(
+  getProductByStore(
+    tenantId: string
+  ): Observable<IDefaultResponse<IProduct[]>> {
+    return this.httpClient.get<IDefaultResponse<IProduct[]>>(
       `${this.appConfig.tenants.urls.base}/${tenantId}/filter`
     );
   }

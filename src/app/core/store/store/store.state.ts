@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { StoreService } from '../../services/store/store.service';
-import {
-  GetStoreInfoAction,
-  SetStoreInfoAction,
-} from './store.actions';
-import { IStore } from '../../interfaces/store-config.interface';
+import { GetStoreInfoAction, SetStoreInfoAction } from './store.actions';
+import { ICategory, IStore } from '../../interfaces/store-config.interface';
 import { tap } from 'rxjs/operators';
 
 export class StoreStateModel {
@@ -25,7 +22,12 @@ export class StoreState {
 
   @Selector()
   static getStore(state: StoreStateModel): IStore | null {
-    return state.store;
+    return state.store ?? null;
+  }
+
+  @Selector()
+  static getStoreCategories(state: StoreStateModel): ICategory[] | null {
+    return state?.store?.category ?? null;
   }
 
   @Action(GetStoreInfoAction)
@@ -34,14 +36,19 @@ export class StoreState {
     { tenantId }: GetStoreInfoAction
   ) {
     return this.storeService.getStoreInfo(tenantId).pipe(
-      tap((store: IStore) => {
-        ctx.dispatch(new SetStoreInfoAction(store));
+      tap((resp) => {
+        if (resp) {
+          ctx.dispatch(new SetStoreInfoAction(resp.store));
+        }
       })
     );
   }
 
   @Action(SetStoreInfoAction)
-  setStoreInfo(ctx: StateContext<StoreStateModel>, { store }: SetStoreInfoAction) {
-    ctx.patchState({ store });
+  setStoreInfo(
+    ctx: StateContext<StoreStateModel>,
+    { store }: SetStoreInfoAction
+  ) {
+    ctx.patchState({ store: store });
   }
 }
