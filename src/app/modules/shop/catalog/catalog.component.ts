@@ -21,6 +21,7 @@ import { CategoryState } from '../../../core/store/category/category.state';
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.scss'],
 })
+
 export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
 

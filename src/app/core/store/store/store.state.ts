@@ -2,17 +2,23 @@ import { Injectable } from '@angular/core';
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { StoreService } from '../../services/store/store.service';
 import { GetStoreInfoAction, SetStoreInfoAction } from './store.actions';
-import { ICategory, IStore } from '../../interfaces/store-config.interface';
+import {
+  ICategory,
+  IDeliveryMethod,
+  IStore,
+} from '../../interfaces/store-config.interface';
 import { tap } from 'rxjs/operators';
 
 export class StoreStateModel {
   store: IStore | null;
+  deliveryMethods: IDeliveryMethod[];
 }
 
 @State<StoreStateModel>({
   name: 'store',
   defaults: {
     store: null,
+    deliveryMethods: [],
   },
 })
 
@@ -22,7 +28,12 @@ export class StoreState {
 
   @Selector()
   static getStore(state: StoreStateModel): IStore | null {
-    return state.store ?? null;
+    return state?.store ?? null;
+  }
+
+  @Selector()
+  static getdeliveryMethods(state: StoreStateModel): IDeliveryMethod[] {
+    return state?.deliveryMethods ?? [];
   }
 
   @Selector()
@@ -38,7 +49,10 @@ export class StoreState {
     return this.storeService.getStoreInfo(tenantId).pipe(
       tap((resp) => {
         if (resp) {
-          ctx.dispatch(new SetStoreInfoAction(resp.store));
+          ctx.setState({
+            store: resp.store,
+            deliveryMethods: resp.deliveryMethods,
+          });
         }
       })
     );

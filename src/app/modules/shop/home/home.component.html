@@ -1,82 +1,38 @@
 <div class="hero">
-    <h1 class="heroTitle">Cafe Artesanal Reventones</h1>
-    <p>Desde reventones en municipio</p>
+  <h1 class="heroTitle">{{ shop?.coverPhrase }}</h1>
+  <p>{{ shop?.typeCommerce?.name }}</p>
 </div>
 <div class="productGrid">
-    <div class="product">
-        <img src="/assets/productHome1.png" alt="">
-    </div>
-    <div class="product">
-        <img src="/assets/productHome2.png" alt="">
-    </div>
-    <div class="product">
-        <img src="/assets/productHome3.png" alt="">
-    </div>
-    <div class="product">
-        <img src="/assets/productHome2.png" alt="">
-    </div>
-    <div class="product">
-        <img src="/assets/productHome1.png" alt="">
-    </div>
-    <div class="product">
-        <img src="/assets/productHome3.png" alt="">
-    </div>
-    <div class="catalogButton" (click)="redirectToCatalog()">
-        <span>Ver catalogo</span>
-    </div>
+  <div class="product" *ngFor="let photo of shop?.catalogPhotos">
+    <img [src]="photo?.uri" [alt]="photo?.id" />
+  </div>
+  <div class="catalogButton" (click)="redirectToCatalog()">
+    <span>Ver catalogo</span>
+  </div>
 </div>
 <div class="cardsContainer">
-    <h2>Productos disponibles</h2>
-    <div class="categories">
-        <div class="category">
-            Comida
-        </div>
-        <div class="category">
-            Arena
-        </div>
-        <div class="category">
-            Gomitas
-        </div>
-        <div class="category">
-            Pañitos
-        </div>
+  <h2>Productos disponibles</h2>
+  <div class="categories">
+    <div class="category" *ngFor="let category of shop?.category">
+      {{ category?.name }}
     </div>
+  </div>
 </div>
 <div class="cardsContainer">
-    <h2>Métodos de pago</h2>
-    <div class="categories">
-        <div class="category">
-            <img src="/assets/nequi.png" alt="Nequi">
-        </div>
-        <div class="category">
-            <img src="/assets/daviplata.png" alt="Daviplata">
-        </div>
-        <div class="category">
-            <img src="/assets/bancolombia.png" alt="bancolombia">
-        </div>
-        <div class="category">
-            <img src="/assets/pse.png" alt="PSE">
-        </div>
-        <div class="category">
-            <img src="/assets/datafono.png" alt="Datafono">
-            Datafono
-        </div>
-        <div class="category">
-            <img src="/assets/efectivo.png" alt="Efectivo">
-            Efectivo
-        </div>
+  <h2>Métodos de pago</h2>
+  <div class="categories">
+    <div class="category" *ngFor="let payment of shop?.paymentMethodToStore">
+      <img [src]="getIconTypePayment(payment?.paymentMethod?.name)" />
+      {{ payment?.paymentMethod?.name }}
     </div>
+  </div>
 </div>
-<div class="cardsContainer" style="margin-bottom: 20px;">
-    <h2>Entregas</h2>
-    <div class="categories">
-        <div class="category">
-            <img src="/assets/tienda.png" alt="En tienda">
-            En tienda
-        </div>
-        <div class="category">
-            <img src="/assets/motoDomicilio.png" alt="Domicilio">
-            Domicilio
-        </div>
+<div class="cardsContainer" style="margin-bottom: 20px">
+  <h2>Entregas</h2>
+  <div class="categories">
+    <div class="category" *ngFor="let methods of deliveryMethods">
+      <img [src]="getIconDeliveryMethods(methods?.title)" />
+      {{ methods?.title }}
     </div>
+  </div>
 </div>
