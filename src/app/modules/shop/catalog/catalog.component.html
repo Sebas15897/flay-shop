@@ -37,12 +37,12 @@
     >
       <div
         class="product"
-        (click)="redirectToProduct()"
+        (click)="redirectToProduct(product)"
         *ngFor="let product of category.product"
       >
-        <img src="/assets/productHome4.png" alt="" />
+        <img src="/assets/productHome4.png" alt="productHome4" />
         <h2>{{ product?.name }}</h2>
-        <span>$ 135.000</span>
+        <span>{{ "$" }}&nbsp;{{ product?.price | number : "1.0-0" }}</span>
       </div>
     </div>
   </ng-container>

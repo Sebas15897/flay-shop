@@ -20,7 +20,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'product',
+        path: 'product/:id',
         loadChildren: () =>
           import('./product/product.module').then(
             (module) => module.ProductModule

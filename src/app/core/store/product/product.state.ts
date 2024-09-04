@@ -22,6 +22,7 @@ export class ProductStateModel {
     selectedProduct: null,
   },
 })
+
 @Injectable()
 export class ProductState {
   constructor(private productService: ProductService) {}
@@ -56,8 +57,8 @@ export class ProductState {
     { payload }: GetProductByIdAction
   ) {
     return this.productService.getProductByProductId(payload).pipe(
-      tap((product: IProduct) => {
-        ctx.dispatch(new SetProductAction(product));
+      tap((resp) => {
+        ctx.dispatch(new SetProductAction(resp.data as IProduct));
       })
     );
   }

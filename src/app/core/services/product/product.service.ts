@@ -22,8 +22,10 @@ export class ProductService {
     );
   }
 
-  getProductByProductId(payload: IProductByIdPayload): Observable<IProduct> {
-    return this.httpClient.get<IProduct>(
+  getProductByProductId(
+    payload: IProductByIdPayload
+  ): Observable<IDefaultResponse<IProduct>> {
+    return this.httpClient.get<IDefaultResponse<IProduct>>(
       `${this.appConfig.tenants.urls.base}/${payload.tenantId}/product/${payload.productId}`
     );
   }

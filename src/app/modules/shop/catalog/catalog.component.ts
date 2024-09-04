@@ -12,9 +12,10 @@ import { Router, NavigationEnd } from '@angular/router';
 import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { StoreState } from '../../../core/store/store/store.state';
-import { ICategory, IProduct } from '../../../core/interfaces/product.interface';
+import { ICategory, IProduct, IProductByIdPayload } from '../../../core/interfaces/product.interface';
 import { ProductState } from '../../../core/store/product/product.state';
 import { CategoryState } from '../../../core/store/category/category.state';
+import { GetProductByIdAction } from '../../../core/store/product/product.actions';
 
 @Component({
   selector: 'app-catalog',
@@ -38,7 +39,6 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private elementRef: ElementRef,
     private store: Store
   ) {
     this.router.events.subscribe((event) => {
@@ -119,8 +119,8 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedOption = option;
   }
 
-  redirectToProduct() {
-    this.router.navigate(['/shop/product']);
+  redirectToProduct(product: IProduct) {
+    this.router.navigate([`/shop/product/${product.id}`]);
   }
 
   ngOnDestroy() {
