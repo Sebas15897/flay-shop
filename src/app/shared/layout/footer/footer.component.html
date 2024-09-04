@@ -1,38 +1,46 @@
 <div class="footer">
-    <div class="firstDivision">
-        <div class="firstSection">
-            <img src="/assets/logo.png" alt="logo">
-            <div class="socialNetworks">
-                <a href=""><img src="/assets/tiktokIcon.png" alt="tiktok"></a>
-                <a href=""><img src="/assets/facebookIcon.png" alt="tiktok"></a>
-                <a href=""><img src="/assets/instagramIcon.png" alt="tiktok"></a>
-            </div>
-        </div>
-        <span class="subTitle">
-            Comida de perros
-        </span>
-        <div class="containerContactInfo">
-            <div class="contactInfo whatsAppInfo">
-                <img src="/assets/whatsappFooter.png" alt="">
-                <a href="https://api.whatsapp.com/send?phone=573144588554" target="_blank">3144588554</a>
-            </div>
-            <div class="contactInfo">
-                <img src="/assets/phoneFooter.png" alt="">
-                <a href="tel:601-000-000" target="_blank">601-000-000</a>
-            </div>
-            <div class="contactInfo">
-                <img src="/assets/webPageFooter.png" alt="">
-                <a href="https://www.comercio.com" target="_blank">www.comercio.com</a>
-            </div>
-            <div class="contactInfo">
-                <img src="/assets/locationFooter.png" alt="">
-                <a href="https://www.google.com/maps/place/Cl.+145+%2311-63+oficina+302,+Bogot%C3%A1/@4.723809,-74.0374844,17z/data=!3m1!4b1!4m5!3m4!1s0x8e3f855e6f645cd7:0xd92afe232c025c70!8m2!3d4.7238037!4d-74.0349095?hl=es&entry=ttu" target="_blank">Calle 145 # 63 - 32 oficina 302</a>
-                
-            </div>
-        </div>
+  <div class="firstDivision">
+    <div class="firstSection">
+      <img [src]="shop?.urlProfilePhoto" alt="logo" />
+      <div class="socialNetworks">
+        <a *ngFor="let social of shop?.socialMediaToStore"
+          ><img
+            width="40px"
+            [src]="social?.socialMedia?.image"
+            [alt]="social?.socialMedia?.name"
+        /></a>
+      </div>
     </div>
-    <hr>
-    <div class="secondDivision">
-        2024 Crea tu catalogo en minutos con <a href="">NIIO</a>
+    <span class="subTitle"> {{ shop?.name }} </span>
+    <div class="containerContactInfo">
+      <div class="contactInfo whatsAppInfo">
+        <img src="/assets/whatsappFooter.png" alt="" />
+        <a
+          href="https://api.whatsapp.com/send?phone=573144588554"
+          target="_blank"
+          >{{ shop?.phone }}</a
+        >
+      </div>
+      <div class="contactInfo">
+        <img src="/assets/phoneFooter.png" alt="" />
+        <a href="tel:601-000-000" target="_blank">{{ shop?.phone }}</a>
+      </div>
+      <div class="contactInfo">
+        <img src="/assets/webPageFooter.png" alt="" />
+        <a href="https://www.comercio.com" target="_blank">www.comercio.com</a>
+      </div>
+      <div class="contactInfo">
+        <img src="/assets/locationFooter.png" alt="" />
+        <a
+          href="https://www.google.com/maps/place/Cl.+145+%2311-63+oficina+302,+Bogot%C3%A1/@4.723809,-74.0374844,17z/data=!3m1!4b1!4m5!3m4!1s0x8e3f855e6f645cd7:0xd92afe232c025c70!8m2!3d4.7238037!4d-74.0349095?hl=es&entry=ttu"
+          target="_blank"
+          >Calle 145 # 63 - 32 oficina 302</a
+        >
+      </div>
     </div>
+  </div>
+  <hr />
+  <div class="secondDivision">
+    2024 Crea tu catalogo en minutos con <a href="">NIIO</a>
+  </div>
 </div>

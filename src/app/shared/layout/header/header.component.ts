@@ -1,28 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SidebarService  } from '../services/aside.service';
+import { SidebarService } from '../services/aside.service';
 import { Location } from '@angular/common';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { IStore } from '../../../core/interfaces/store-config.interface';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
+  private destroy: Subject<boolean> = new Subject<boolean>();
   title: string = ''; // Título dinámico
   showBackButton: boolean = false; // Boolean para mostrar u ocultar el botón de "volver atrás"
   cartButton: boolean = true; // Boolean para mostrar u ocultar el botón del carrito
 
+  shop$: Observable<IStore> = new Observable();
+  shop: IStore = null;
+
   constructor(
     private router: Router,
-    private sidebarService : SidebarService,
-    private location: Location
+    private sidebarService: SidebarService,
+    private location: Location,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.updateHeaderContent(); // Actualiza el contenido del encabezado al inicializar
     this.router.events.subscribe(() => {
       this.updateHeaderContent(); // Actualiza el contenido del encabezado cuando cambia la ruta
+    });
+
+    this.subscribeState();
+  }
+
+  subscribeState() {
+    this.shop$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      this.shop = resp;
     });
   }
 
@@ -36,7 +52,7 @@ export class HeaderComponent {
     } else if (currentRoute.includes('/shop/catalog')) {
       this.title = 'Catalogo';
       this.showBackButton = false;
-      this.cartButton = true; 
+      this.cartButton = true;
     } else if (currentRoute.includes('/shop/product')) {
       this.title = 'Producto';
       this.showBackButton = true; // Mostrar botón de "volver atrás"
@@ -55,11 +71,11 @@ export class HeaderComponent {
     }
   }
 
-  redirectToHome(){
+  redirectToHome() {
     this.router.navigate(['/shop/home']);
   }
 
-  redirectToCart(){
+  redirectToCart() {
     this.router.navigate(['/shop/shopping-cart']);
   }
 
@@ -69,5 +85,10 @@ export class HeaderComponent {
 
   goBack() {
     this.location.back(); // Navega a la página anterior
+  }
+
+  ngOnDestroy() {
+    this.destroy.next(true);
+    this.destroy.unsubscribe();
   }
 }

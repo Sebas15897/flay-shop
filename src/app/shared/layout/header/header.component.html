@@ -1,19 +1,32 @@
 <div class="mainHeader" [class.whiter]="showBackButton">
-    <div *ngIf="!showBackButton" class="leftHeader">
-        <img src="/assets/logo.png" alt="" class="logo" (click)="redirectToHome()">
-        <img src="/assets/moreDots.svg" alt="" (click)="toggleSidebar()">
-    </div>
-    <div *ngIf="showBackButton" class="leftWhiteHeader" (click)="goBack()">
-        <img src="/assets/chevron-left.png" alt="" class="logo">
-        <span>Volver</span>
-    </div>
-    <h2 class="headerText" [class.middleText]="!cartButton" [class.middleTextWithoutCart]="showBackButton">
-        {{title}}
-    </h2>
-    <div *ngIf="cartButton" class="rightHeader">
-        <img [src]="showBackButton ? '/assets/cartIconBlack.png' : '/assets/cartIcon.png'" alt="" (click)="redirectToCart()" [class.blackCart]="showBackButton">
-        <div class="counter">
-            1
-        </div>
-    </div>
+  <div *ngIf="!showBackButton" class="leftHeader">
+    <img
+      [src]="shop?.urlProfilePhoto"
+      class="logo"
+      (click)="redirectToHome()"
+    />
+    <img src="/assets/moreDots.svg" alt="" (click)="toggleSidebar()" />
+  </div>
+  <div *ngIf="showBackButton" class="leftWhiteHeader" (click)="goBack()">
+    <img src="/assets/chevron-left.png" alt="" class="logo" />
+    <span>Volver</span>
+  </div>
+  <h2
+    class="headerText"
+    [class.middleText]="!cartButton"
+    [class.middleTextWithoutCart]="showBackButton"
+  >
+    {{ title }}
+  </h2>
+  <div *ngIf="cartButton" class="rightHeader">
+    <img
+      [src]="
+        showBackButton ? '/assets/cartIconBlack.png' : '/assets/cartIcon.png'
+      "
+      alt=""
+      (click)="redirectToCart()"
+      [class.blackCart]="showBackButton"
+    />
+    <div class="counter">1</div>
+  </div>
 </div>
