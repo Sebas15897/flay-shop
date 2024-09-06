@@ -1,16 +1,16 @@
 <header>
-    <app-header></app-header>
+  <app-header></app-header>
 </header>
 <aside>
-    <app-sidebar></app-sidebar>
+  <app-sidebar></app-sidebar>
 </aside>
 <main>
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </main>
 <footer *ngIf="!showAlternativeFooter">
-    <app-footer></app-footer>
+  <app-footer></app-footer>
 </footer>
 <!-- Footer carrito de compras -->
 <footer *ngIf="showAlternativeFooter">
-    <app-footer-cart></app-footer-cart>
+  <app-footer-cart></app-footer-cart>
 </footer>

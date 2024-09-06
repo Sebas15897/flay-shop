@@ -3,37 +3,56 @@
     <p>Costo de domicilios $10.000</p>
     <p><b>TOTAL : $145.000</b></p>
   </div>
-  <div *ngIf="normal" class="quantityProduct">
-    <div class="minus">
-      <img src="/assets/minusIcon.svg" alt="" />
+  <form [formGroup]="productForm" class="footer">
+    <div *ngIf="normal" class="quantityProduct">
+      <div
+        class="plus"
+        role="button"
+        [class.disabled]="productForm.invalid"
+        [ariaDisabled]="productForm.invalid"
+        (click)="decreaseQuantity()"
+      >
+        <img src="/assets/minusIcon.svg" alt="Disminuir" />
+      </div>
+      <div class="counter">
+        <span class="quantity"
+          ><b>{{ productForm.get("quantity")?.value }}</b></span
+        >
+        <span class="units">Unidades</span>
+      </div>
+      <div
+        class="plus"
+        role="button"
+        [class.disabled]="productForm.invalid"
+        [ariaDisabled]="productForm.invalid"
+        (click)="increaseQuantity()"
+      >
+        <img src="/assets/plusGreenIcon.svg" alt="Aumentar" />
+      </div>
     </div>
-    <div class="counter">
-      <span class="quantity"><b>20</b></span>
-      <span class="units">Unidades</span>
+    <div
+      *ngIf="cartButtons || shipping"
+      class="moreProducts"
+      (click)="redirecToCatalog()"
+    >
+      Más productos
     </div>
-    <div class="plus">
-      <img src="/assets/plusGreenIcon.svg" alt="" />
+    <div *ngIf="normal" class="total" (click)="addProduct()">
+      <span
+        >Agregar $
+        {{ productForm.get("total")?.value | number : "1.0-0" }}</span
+      >
     </div>
-  </div>
-  <div
-    *ngIf="cartButtons || shipping"
-    class="moreProducts"
-    (click)="redirecToCatalog()"
-  >
-    Más productos
-  </div>
-  <div *ngIf="normal" class="total">
-    <span>Agregar $ 850.000</span>
-  </div>
-  <div *ngIf="cartButtons" class="total" (click)="redirecToShipping()">
-    <span>Comprar $1.850.000</span>
-  </div>
-  <div *ngIf="shipping" class="total" (click)="redirecToShipping()">
-    <span>Terminar compra</span>
-    <img
-      src="/assets/whatsAppIcon.svg"
-      alt=""
-      style="margin-left: 5px; margin-top: 2px"
-    />
-  </div>
+    <div *ngIf="cartButtons" class="total" (click)="redirecToShipping()">
+      <span>Comprar $1.850.000</span>
+    </div>
+    <div *ngIf="shipping" class="total" (click)="redirecToShipping()">
+      <span>Terminar compra</span>
+      <img
+        src="/assets/whatsAppIcon.svg"
+        alt=""
+        style="margin-left: 5px; margin-top: 2px"
+      />
+    </div>
+  </form>
 </div>

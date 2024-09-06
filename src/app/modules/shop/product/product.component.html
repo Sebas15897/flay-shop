@@ -5,7 +5,7 @@
 <div class="carousel-container-wrapper">
   <div #carousel class="carousel">
     <div class="carousel-container" *ngFor="let image of product?.files">
-      <img [src]="image.uri" [alt]="image.name" />
+      <img [src]="image?.uri" [alt]="image?.name" />
     </div>
   </div>
   <div class="carousel-dots">
@@ -33,114 +33,16 @@
     </p>
   </div>
 </div>
-<div class="optionsContainer">
-  <h2>Tallas</h2>
+<div
+  class="optionsContainer"
+  *ngFor="let variant of product?.variants?.variantActive?.[0]?.variation || []"
+>
+  <h2>{{ variant?.name }}</h2>
   <div
     class="option"
-    [ngClass]="{ selected: selectedOption === 1 }"
-    (click)="selectOption(1)"
+    [ngClass]="{ selected: isSelected(variant) }"
+    (click)="toggleOption(variant)"
   >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 2 }"
-    (click)="selectOption(2)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 3 }"
-    (click)="selectOption(3)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 4 }"
-    (click)="selectOption(4)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 5 }"
-    (click)="selectOption(5)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 6 }"
-    (click)="selectOption(6)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 7 }"
-    (click)="selectOption(7)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 8 }"
-    (click)="selectOption(8)"
-  >
-    XL
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOption === 9 }"
-    (click)="selectOption(9)"
-  >
-    XL
-  </div>
-</div>
-<div class="optionsContainer" style="margin-bottom: 110px">
-  <h2>Colores</h2>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOptionSecond === 1 }"
-    (click)="selectOptionSecond(1)"
-  >
-    Rojo
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOptionSecond === 2 }"
-    (click)="selectOptionSecond(2)"
-  >
-    Verde
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOptionSecond === 3 }"
-    (click)="selectOptionSecond(3)"
-  >
-    Azul
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOptionSecond === 4 }"
-    (click)="selectOptionSecond(4)"
-  >
-    Amarillo
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOptionSecond === 5 }"
-    (click)="selectOptionSecond(5)"
-  >
-    Negro
-  </div>
-  <div
-    class="option"
-    [ngClass]="{ selected: selectedOptionSecond === 6 }"
-    (click)="selectOptionSecond(6)"
-  >
-    Blanco
+    {{ variant?.variant?.name }}
   </div>
 </div>

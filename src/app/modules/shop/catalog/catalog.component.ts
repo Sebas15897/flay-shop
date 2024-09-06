@@ -8,14 +8,15 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { StoreState } from '../../../core/store/store/store.state';
-import { ICategory, IProduct, IProductByIdPayload } from '../../../core/interfaces/product.interface';
+import {
+  ICategory,
+  IProduct,
+} from '../../../core/interfaces/product.interface';
 import { ProductState } from '../../../core/store/product/product.state';
 import { CategoryState } from '../../../core/store/category/category.state';
-import { GetProductByIdAction } from '../../../core/store/product/product.actions';
 
 @Component({
   selector: 'app-catalog',
@@ -32,24 +33,18 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   categories$: Observable<ICategory[]> = new Observable();
   categories: ICategory[] = [];
 
+  parentCategories: ICategory[] = [];
+  subcategories: ICategory[] = [];
+
   products$: Observable<IProduct[]> = new Observable();
   products: IProduct[] = [];
 
   selectedOption: number | null = null;
+  selectedSubOption: number | null = null;
 
-  constructor(
-    private router: Router,
-    private store: Store
-  ) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        const tree = this.router.parseUrl(this.router.url);
-        if (tree.fragment) {
-          this.scrollToBottom();
-        }
-      }
-    });
+  searchTerm: string = '';
 
+  constructor(private router: Router, private store: Store) {
     this.categories$ = this.store.select(CategoryState.getCategories);
     this.products$ = this.store.select(ProductState.getProducts);
   }
@@ -60,67 +55,68 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscribeState() {
     this.categories$.pipe(takeUntil(this.destroy)).subscribe((categories) => {
-      this.categories = categories;
-    })
+      if (categories) {
+        const { parentCategories, subcategories } =
+          this.separateParentAndSubcategories(categories);
+        this.categories = categories;
+        this.parentCategories = parentCategories;
+      }
+    });
   }
 
-  ngAfterViewInit() {
-    if (this.optionsHeader) {
-      const headerContainer = this.optionsHeader.nativeElement;
+  separateParentAndSubcategories(categories: ICategory[]): {
+    parentCategories: ICategory[];
+    subcategories: ICategory[];
+  } {
+    const parentCategories: ICategory[] = [];
+    const subcategories: ICategory[] = [];
 
-      headerContainer.addEventListener('wheel', (event: WheelEvent) => {
-        if (event.deltaY !== 0) {
-          headerContainer.scrollLeft += event.deltaY;
-          event.preventDefault();
-        }
-      });
-    }
+    categories.forEach((category) => {
+      if (!category.parent) {
+        parentCategories.push(category);
+      } else {
+        subcategories.push(category);
+      }
+    });
 
-    if (this.productRows) {
-      this.productRows.forEach((row) => {
-        const productRowElement = row.nativeElement;
-
-        productRowElement.addEventListener('wheel', (event: WheelEvent) => {
-          if (event.deltaY !== 0) {
-            productRowElement.scrollLeft += event.deltaY;
-            event.preventDefault();
-          }
-        });
-      });
-    }
+    return { parentCategories, subcategories };
   }
 
-  scrollToBottom(): void {
-    const startPosition = window.pageYOffset;
-    const targetPosition = document.body.scrollHeight - window.innerHeight;
-    const distance = targetPosition - startPosition;
-    const duration = 1000;
-    let startTime: number | null = null;
-
-    function animation(currentTime: number) {
-      if (startTime === null) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const run = ease(timeElapsed, startPosition, distance, duration);
-      window.scrollTo(0, run);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-
-    function ease(t: number, b: number, c: number, d: number): number {
-      t /= d / 2;
-      if (t < 1) return (c / 2) * t * t + b;
-      t--;
-      return (-c / 2) * (t * (t - 2) - 1) + b;
-    }
-
-    requestAnimationFrame(animation);
-  }
+  ngAfterViewInit() {}
 
   selectOption(option: number): void {
     this.selectedOption = option;
+    this.subcategories = this.getSubcategoriesByParent(option);
+    const element = document.getElementById('category-' + option);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  getSubcategoriesByParent(parentId: number): ICategory[] {
+    return this.categories.filter(
+      (subcategory) => subcategory.parent && subcategory.parent.id === parentId
+    );
+  }
+
+  selectSubcategory(subcategoryId: number): void {
+    this.selectedSubOption = subcategoryId;
+    const element = document.getElementById('category-' + subcategoryId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   redirectToProduct(product: IProduct) {
     this.router.navigate([`/shop/product/${product.id}`]);
+  }
+
+  filterCategories(): ICategory[] {
+    if (!this.searchTerm) return this.parentCategories;
+
+    return this.parentCategories.filter((category) =>
+      category.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 
   ngOnDestroy() {

@@ -1,5 +1,17 @@
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 /* You can add global styles to this file, and also import other style files */
-body{
-    background-color: #F6F6F6 !important;
-    zoom: 100%;
+body {
+  background-color: #f6f6f6 !important;
+  zoom: 100%;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
 }

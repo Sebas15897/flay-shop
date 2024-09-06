@@ -20,12 +20,13 @@ export interface IStore {
   coverPhrase: null;
   typeCommerce: ITypeCommerce;
   category: ICategory[];
-  paymentMethodToStore: PaymentMethodToStore[];
-  socialMediaToStore: SocialMediaToStore[];
-  dispatch: Dispatch[];
+  paymentMethodToStore: IPaymentMethodToStore[];
+  socialMediaToStore: ISocialMediaToStore[];
+  dispatch: IDispatch[];
   catalogPhotos: any[];
   urlProfilePhoto: string;
   urlPortraitPhoto: string;
+  subdomain: string;
 }
 
 export interface ICategory {
@@ -38,21 +39,21 @@ export interface ITypeCommerce {
   name: string;
 }
 
-export interface Dispatch {
+export interface IDispatch {
   address: string;
 }
 
-export interface PaymentMethodToStore {
+export interface IPaymentMethodToStore {
   id: number;
   paymentMethod: ITypeCommerce;
 }
 
-export interface SocialMediaToStore {
+export interface ISocialMediaToStore {
   socialMediaId: number;
-  socialMedia: SocialMedia;
+  socialMedia: ISocialMedia;
 }
 
-export interface SocialMedia {
+export interface ISocialMedia {
   id: number;
   name: string;
   image: string;

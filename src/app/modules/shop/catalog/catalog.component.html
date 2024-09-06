@@ -2,14 +2,12 @@
   <h1 class="heroTitle">Categorías</h1>
   <div #optionsHeader class="optionsHeader">
     <div
-      *ngFor="let category of categories"
+      *ngFor="let category of parentCategories"
       class="option"
-      [ngClass]="{ selected: selectedOption === category.id }"
-      (click)="selectOption(category.id)"
-      routerLink="/shop/catalog"
-      fragment="gatos"
+      [ngClass]="{ selected: selectedOption === category?.id }"
+      (click)="selectOption(category?.id)"
     >
-      {{ category.name }}
+      {{ category?.name }}
     </div>
   </div>
 </div>
@@ -20,27 +18,41 @@
       id="searcher"
       placeholder="Buscar por categoría"
       class="searchInput"
+      [(ngModel)]="searchTerm"
     />
     <img src="/assets/lupa.png" alt="Buscar" class="searchIcon" />
   </label>
 </div>
+<div class="productsContainer pb-4">
+  <div #optionsSubHeader>
+    <div class="subcategoriesContainer">
+      <div
+        *ngFor="let subcategory of subcategories"
+        class="option mr"
+        [ngClass]="{ selected: selectedSubOption === subcategory?.id }"
+        (click)="selectSubcategory(subcategory?.id)"
+      >
+        {{ subcategory?.name }}
+      </div>
+    </div>
+  </div>
+</div>
 <div class="productsContainer">
-  <ng-container *ngFor="let category of categories">
-    <div class="containerCategoryDiv" *ngIf="category.product.length">
+  <ng-container *ngFor="let category of filterCategories(); let i = index">
+    <div
+      class="containerCategoryDiv"
+      *ngIf="category?.product?.length"
+      [id]="'category-' + category?.id"
+    >
       <div class="categoryDiv">{{ category?.name }}</div>
     </div>
-    <div
-      class="productRow"
-      #productRow
-      id="comida"
-      *ngIf="category.product.length"
-    >
+    <div class="productRow" id="comida" *ngIf="category?.product?.length">
       <div
         class="product"
         (click)="redirectToProduct(product)"
-        *ngFor="let product of category.product"
+        *ngFor="let product of category?.product"
       >
-        <img src="/assets/productHome4.png" alt="productHome4" />
+        <img [src]="product?.files[0]?.uri || null" alt="productHome4" />
         <h2>{{ product?.name }}</h2>
         <span>{{ "$" }}&nbsp;{{ product?.price | number : "1.0-0" }}</span>
       </div>

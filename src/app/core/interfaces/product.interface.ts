@@ -14,7 +14,7 @@ export interface IProduct {
   stock: number;
   price: number;
   numberEmergency: number;
-  variants: IVariants;
+  variants: IVarinats;
   unit: IUnit;
   state: IState;
   category: ICategory;
@@ -26,9 +26,14 @@ export interface ICategory {
   id: number;
   name: string;
   type: string;
-  parent: string;
+  parent: IParent;
   children: string[];
   product: IProduct[];
+}
+
+export interface IParent {
+  id: number;
+  name: string;
 }
 
 export interface IFile {
@@ -48,10 +53,30 @@ export interface IUnit {
   name: string;
 }
 
-export interface IVariants {
-  variantEmergency: number[];
-  variantNotSold: number[];
-  variantActive: number[];
+export interface IVarinats {
+  variantEmergency: any[];
+  variantNotSold: any[];
+  variantActive: VariantActive[];
+}
+
+export interface VariantActive {
+  id: string;
+  stock: number;
+  price: number;
+  variation: Variation[];
+  sku: string;
+  discount: null;
+}
+
+export interface Variation {
+  id: number;
+  name: string;
+  variant: Variant;
+}
+
+export interface Variant {
+  id: number;
+  name: string;
 }
 
 export interface IProductByIdPayload {
@@ -73,6 +98,10 @@ export interface IProduct {
   price: number;
   numberEmergency: number;
   storeId: string;
-  variants: IVariants;
+  variants: IVarinats;
   files: any[];
+}
+
+export interface IPayloadAddProduct {
+  amount: number;
 }

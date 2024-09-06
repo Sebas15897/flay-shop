@@ -6,9 +6,12 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { IProduct, IProductByIdPayload } from '../../../core/interfaces/product.interface';
+import {
+  IProduct,
+  IProductByIdPayload,
+} from '../../../core/interfaces/product.interface';
 import { Store } from '@ngxs/store';
 import { GetProductByIdAction } from '../../../core/store/product/product.actions';
 import { StoreState } from '../../../core/store/store/store.state';
@@ -25,8 +28,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
 
   @ViewChild('carousel') carouselImages!: ElementRef;
-  selectedOption: number | null = null;
-  selectedOptionSecond: number | null = null;
   isOpen: boolean = false;
   currentIndex: number = 0;
   dots: number[] = [];
@@ -39,8 +40,10 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   product$: Observable<IProduct> = new Observable();
   product: IProduct = null;
 
+  selectedOptions: any[] = [];
+
   constructor(private activatedRoute: ActivatedRoute, private store: Store) {
-    this.productId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.productId = this.activatedRoute?.snapshot?.paramMap?.get('id');
     this.shop$ = this.store.select(StoreState.getStore);
     this.product$ = this.store.select(ProductState.getSelectedProduct);
   }
@@ -54,7 +57,7 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       if (resp) {
         const payload: IProductByIdPayload = {
           productId: this.productId,
-          tenantId: resp.name?.toLowerCase(),
+          tenantId: resp?.subdomain?.toLowerCase(),
         };
         this.store.dispatch(new GetProductByIdAction(payload));
       }
@@ -69,7 +72,7 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.carouselImages) {
-      const container = this.carouselImages.nativeElement;
+      const container = this.carouselImages?.nativeElement;
 
       this.dots = Array.from({ length: this.getSlidesCount() }, (_, i) => i);
       this.updateDots();
@@ -79,10 +82,9 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateDots();
       });
 
-      // Manejo de desplazamiento con la rueda del ratón
       container.addEventListener('wheel', (event: WheelEvent) => {
-        if (event.deltaY !== 0) {
-          container.scrollLeft += event.deltaY;
+        if (event?.deltaY !== 0) {
+          container.scrollLeft += event?.deltaY;
           event.preventDefault();
         }
       });
@@ -90,17 +92,17 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getSlidesCount(): number {
-    return this.carouselImages.nativeElement.children.length;
+    return this.carouselImages?.nativeElement?.children?.length;
   }
 
-  goToSlide(index: number): void {
+  goToSlide(index: number) {
     this.currentIndex = index;
     this.updateCarousel();
   }
 
-  updateCarousel(): void {
-    const container = this.carouselImages.nativeElement;
-    const containerWidth = container.offsetWidth;
+  updateCarousel() {
+    const container = this.carouselImages?.nativeElement;
+    const containerWidth = container?.offsetWidth;
     const slideWidth =
       container.querySelector('.carousel-container')?.offsetWidth || 0;
     const offset =
@@ -112,9 +114,9 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  updateCurrentIndex(): void {
-    const container = this.carouselImages.nativeElement;
-    const containerWidth = container.offsetWidth;
+  updateCurrentIndex() {
+    const container = this.carouselImages?.nativeElement;
+    const containerWidth = container?.offsetWidth;
     const slideWidth =
       container.querySelector('.carousel-container')?.offsetWidth || 0;
     this.currentIndex = Math.round(container.scrollLeft / slideWidth);
@@ -124,27 +126,43 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  updateDots(): void {
+  updateDots() {
     const dots = document.querySelectorAll('.carousel-dots span');
-    dots.forEach((dot, index) => {
-      dot.classList.toggle('active', index === this.currentIndex);
+    dots?.forEach((dot, index) => {
+      dot?.classList.toggle('active', index === this.currentIndex);
     });
   }
 
-  toggleDescription(): void {
+  toggleDescription() {
     this.isOpen = !this.isOpen;
   }
 
-  selectOption(option: number): void {
-    this.selectedOption = option;
+  isSelected(variant: any): boolean {
+    return this.selectedOptions.some(
+      (selected) => selected.variant?.id === variant.variant?.id
+    );
   }
 
-  selectOptionSecond(option: number): void {
-    this.selectedOptionSecond = option;
+  // Método para seleccionar o deseleccionar una variante
+  toggleOption(variant: any) {
+    const index = this.selectedOptions.findIndex(
+      (selected) => selected.variant?.id === variant.variant?.id
+    );
+
+    console.log(variant, 'toggle option');
+    console.log(index, 'index');
+
+    if (index > -1) {
+      // Si la opción ya está seleccionada, la quitamos
+      this.selectedOptions.splice(index, 1);
+    } else {
+      // Si no está seleccionada, la añadimos
+      this.selectedOptions.push(variant);
+    }
   }
 
   ngOnDestroy() {
-    this.destroy.next(true);
-    this.destroy.unsubscribe();
+    this.destroy?.next(true);
+    this.destroy?.unsubscribe();
   }
 }

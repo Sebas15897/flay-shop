@@ -1,0 +1,39 @@
+<div class="container">
+  <!--  <img [src]="getAlertImg()" alt="warning-icon" /> -->
+  <!--   <p class="title" *ngIf="data.type === 'error'">
+    {{ data.title ?? "¡Error!" }}
+  </p>
+  <p class="title" *ngIf="data.type === 'success'">
+    {{ data.title ?? "¡Proceso exitoso!" }}
+  </p>
+  <p class="title" *ngIf="data.type === 'warning'">
+    {{ data.title ?? "¡Advertencia!" }}
+  </p>
+  <p class="title" *ngIf="data.type === 'sale'">
+    {{ data.title ?? "Creación venta" }}
+  </p> -->
+  <p
+    *ngIf="data.type === 'error' && !data.text; else elseBlock"
+    class="text-container"
+  >
+    Ha ocurrido un error. <br />
+    ¡Vuelve a intentarlo!
+  </p>
+  <div class="container-buttons">
+    <button
+      mat-flat-button
+      class="btn-cancel"
+      [mat-dialog-close]="false"
+      *ngIf="!data.hiddeCancelBtn"
+    >
+      {{ data.cancelButtonText ? data.cancelButtonText : "Cancelar" }}
+    </button>
+    <button mat-flat-button class="btn-save" [mat-dialog-close]="true">
+      {{ data.saveButtonText ? data.saveButtonText : "Cerrar" }}
+    </button>
+  </div>
+</div>
+
+<ng-template #elseBlock>
+  <p [innerHTML]="data.text"></p>
+</ng-template>
