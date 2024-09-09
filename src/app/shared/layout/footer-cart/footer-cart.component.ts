@@ -138,7 +138,8 @@ export class FooterCartComponent implements OnInit, OnDestroy {
   }
 
   redirecToShipping() {
-    this.openWhatsAppChat();
+    this.router.navigate(['/shop/shipping-information']);
+/*     this.openWhatsAppChat(); */
   }
 
   openWhatsAppChat() {
