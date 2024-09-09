@@ -105,3 +105,23 @@ export interface IProduct {
 export interface IPayloadAddProduct {
   amount: number;
 }
+
+export interface IAddProductCarShop {
+  id: string;
+  name: string;
+  categoryId: number;
+  enabled: boolean;
+  withVariant: boolean;
+  sku: string;
+  discount: number;
+  unitId: number;
+  description: string;
+  stock: number;
+  price: number;
+  numberEmergency: number;
+  storeId: string;
+  variants: IVarinats;
+  files: any[];
+  quantity: number;
+  total: number;
+}

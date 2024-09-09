@@ -5,32 +5,40 @@ import { Location } from '@angular/common';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IStore } from '../../../core/interfaces/store-config.interface';
 import { Store } from '@ngxs/store';
+import { IAddProductCarShop } from '../../../core/interfaces/product.interface';
+import { ProductState } from '../../../core/store/product/product.state';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
+
 export class HeaderComponent implements OnInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
-  title: string = ''; // Título dinámico
-  showBackButton: boolean = false; // Boolean para mostrar u ocultar el botón de "volver atrás"
-  cartButton: boolean = true; // Boolean para mostrar u ocultar el botón del carrito
+  title: string = '';
+  showBackButton: boolean = false;
+  cartButton: boolean = true;
 
   shop$: Observable<IStore> = new Observable();
   shop: IStore = null;
+
+  selectProducts$: Observable<IAddProductCarShop[]> = new Observable();
+  selectProducts: IAddProductCarShop[] = null;
 
   constructor(
     private router: Router,
     private sidebarService: SidebarService,
     private location: Location,
     private store: Store
-  ) {}
+  ) {
+    this.selectProducts$ = this.store.select(ProductState.getShopCarProducts);
+  }
 
   ngOnInit(): void {
-    this.updateHeaderContent(); // Actualiza el contenido del encabezado al inicializar
+    this.updateHeaderContent();
     this.router.events.subscribe(() => {
-      this.updateHeaderContent(); // Actualiza el contenido del encabezado cuando cambia la ruta
+      this.updateHeaderContent();
     });
 
     this.subscribeState();
@@ -40,6 +48,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.shop$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       this.shop = resp;
     });
+
+    this.selectProducts$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      this.selectProducts = resp;
+    });
   }
 
   updateHeaderContent() {
@@ -47,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     if (currentRoute.includes('/shop/home')) {
       this.title = 'Adidas';
-      this.showBackButton = false; // No mostrar botón de "volver atrás" en Home
+      this.showBackButton = false;
       this.cartButton = true;
     } else if (currentRoute.includes('/shop/catalog')) {
       this.title = 'Catalogo';
@@ -55,7 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.cartButton = true;
     } else if (currentRoute.includes('/shop/product')) {
       this.title = 'Producto';
-      this.showBackButton = true; // Mostrar botón de "volver atrás"
+      this.showBackButton = true;
       this.cartButton = true;
     } else if (currentRoute.includes('/shop/shopping-cart')) {
       this.title = 'Canasta de compras';
@@ -84,7 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back(); // Navega a la página anterior
+    this.location.back();
   }
 
   ngOnDestroy() {

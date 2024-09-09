@@ -43,8 +43,16 @@
         {{ productForm.get("total")?.value | number : "1.0-0" }}</span
       >
     </div>
-    <div *ngIf="cartButtons" class="total" (click)="redirecToShipping()">
-      <span>Comprar $1.850.000</span>
+    <div
+      *ngIf="cartButtons"
+      class="total"
+      (click)="redirecToShipping()"
+      [class.disabled]="totalShop === 0"
+    >
+      <span
+        >Comprar
+        {{ totalShop | currency : "COP" : "symbol-narrow" : "1.0-0" }}</span
+      >
     </div>
     <div *ngIf="shipping" class="total" (click)="redirecToShipping()">
       <span>Terminar compra</span>

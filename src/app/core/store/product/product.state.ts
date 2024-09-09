@@ -6,13 +6,22 @@ import {
   GetProductByIdAction,
   SetProductsAction,
   SetProductAction,
+  AddProductToCarAction,
+  ClearCarProductsAction,
+  RemoveProductFromCarAction,
+  DecrementProductQuantityAction,
+  IncrementProductQuantityAction,
 } from './product.actions';
-import { IProduct } from '../../interfaces/product.interface';
+import {
+  IAddProductCarShop,
+  IProduct,
+} from '../../interfaces/product.interface';
 import { tap } from 'rxjs/operators';
 
 export class ProductStateModel {
   products: IProduct[];
   selectedProduct: IProduct | null;
+  carProducts: IAddProductCarShop[];
 }
 
 @State<ProductStateModel>({
@@ -20,6 +29,7 @@ export class ProductStateModel {
   defaults: {
     products: [],
     selectedProduct: null,
+    carProducts: [],
   },
 })
 
@@ -35,6 +45,11 @@ export class ProductState {
   @Selector()
   static getSelectedProduct(state: ProductStateModel): IProduct | null {
     return state.selectedProduct;
+  }
+
+  @Selector()
+  static getShopCarProducts(state: ProductStateModel): IAddProductCarShop[] {
+    return state.carProducts ?? [];
   }
 
   @Action(GetProductsByStoreAction)
@@ -68,7 +83,7 @@ export class ProductState {
     ctx: StateContext<ProductStateModel>,
     { products }: SetProductsAction
   ) {
-    ctx.patchState({ products });
+    return ctx.patchState({ products });
   }
 
   @Action(SetProductAction)
@@ -76,6 +91,75 @@ export class ProductState {
     ctx: StateContext<ProductStateModel>,
     { product }: SetProductAction
   ) {
-    ctx.patchState({ selectedProduct: product });
+    return ctx.patchState({ selectedProduct: product });
+  }
+
+  @Action(AddProductToCarAction)
+  AddProductToCarAction(
+    ctx: StateContext<ProductStateModel>,
+    { product }: AddProductToCarAction
+  ) {
+    const products = ctx.getState().carProducts;
+    const updatedProducts = [...products, product];
+    return ctx.patchState({ carProducts: updatedProducts });
+  }
+
+  @Action(RemoveProductFromCarAction)
+  removeProductFromCar(
+    ctx: StateContext<ProductStateModel>,
+    { productId }: RemoveProductFromCarAction
+  ) {
+    const currentProducts = ctx.getState().carProducts;
+
+    const updatedProducts = currentProducts.filter(
+      (product) => product.id !== productId
+    );
+
+    return ctx.patchState({ carProducts: updatedProducts });
+  }
+
+  @Action(ClearCarProductsAction)
+  clearCarProducts(ctx: StateContext<ProductStateModel>) {
+    return ctx.patchState({ carProducts: [] });
+  }
+
+  @Action(IncrementProductQuantityAction)
+  incrementProductQuantity(
+    ctx: StateContext<ProductStateModel>,
+    { productId }: IncrementProductQuantityAction
+  ) {
+    const state = ctx.getState();
+    const updatedProducts = state.carProducts.map((product) => {
+      if (product.id === productId) {
+        return {
+          ...product,
+          quantity: product.quantity + 1,
+          total: product.price * (product.quantity + 1),
+        };
+      }
+      return product;
+    });
+
+    ctx.patchState({ carProducts: updatedProducts });
+  }
+
+  @Action(DecrementProductQuantityAction)
+  decrementProductQuantity(
+    ctx: StateContext<ProductStateModel>,
+    { productId }: DecrementProductQuantityAction
+  ) {
+    const state = ctx.getState();
+    const updatedProducts = state.carProducts.map((product) => {
+      if (product.id === productId && product.quantity > 1) {
+        return {
+          ...product,
+          quantity: product.quantity - 1,
+          total: product.price * (product.quantity - 1),
+        };
+      }
+      return product;
+    });
+
+    ctx.patchState({ carProducts: updatedProducts });
   }
 }

@@ -149,8 +149,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       (selected) => selected.variant?.id === variant.variant?.id
     );
 
-    console.log(variant, 'toggle option');
-    console.log(index, 'index');
 
     if (index > -1) {
       // Si la opción ya está seleccionada, la quitamos
