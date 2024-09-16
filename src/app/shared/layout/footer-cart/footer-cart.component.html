@@ -1,7 +1,12 @@
 <div class="footer" [ngClass]="{ shipping: shipping }">
   <div *ngIf="shipping" class="values">
     <p>Costo de domicilios $10.000</p>
-    <p><b>TOTAL : $145.000</b></p>
+    <p>
+      <b
+        >TOTAL :
+        {{ totalShop | currency : "COP" : "symbol-narrow" : "1.0-0" }}</b
+      >
+    </p>
   </div>
   <form [formGroup]="productForm" class="footer">
     <div *ngIf="normal" class="quantityProduct">
@@ -54,7 +59,7 @@
         {{ totalShop | currency : "COP" : "symbol-narrow" : "1.0-0" }}</span
       >
     </div>
-    <div *ngIf="shipping" class="total" (click)="redirecToShipping()">
+    <div *ngIf="shipping" class="total" (click)="openWhatsAppChat()">
       <span>Terminar compra</span>
       <img
         src="/assets/whatsAppIcon.svg"

@@ -11,6 +11,7 @@ import { Store } from '@ngxs/store';
 import { AddProductToCarAction } from '../../../core/store/product/product.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { FlayAlertComponent } from '../../../core/components/flay-alert/flay-alert.component';
+import { FormStatusService } from '../../../core/services/form-order-status/form-order-status.service';
 
 @Component({
   selector: 'app-footer-cart',
@@ -19,26 +20,24 @@ import { FlayAlertComponent } from '../../../core/components/flay-alert/flay-ale
 })
 export class FooterCartComponent implements OnInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
-
   product$: Observable<IProduct> = new Observable();
   product: IProduct = null;
-
   selectProducts$: Observable<IAddProductCarShop[]> = new Observable();
   selectProducts: IAddProductCarShop[] = null;
-
   cartButtons: boolean = true;
   normal: boolean = true;
   shipping: boolean = false;
-
   productForm: FormGroup;
-
   totalShop: number = 0;
+  // Se usa para validar si la orden es valida.
+  isFormValid: boolean = false;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private store: Store,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private formStatusService: FormStatusService
   ) {
     this.productForm = this.createForm();
     this.product$ = this.store.select(ProductState.getSelectedProduct);
@@ -73,7 +72,7 @@ export class FooterCartComponent implements OnInit, OnDestroy {
           unit: resp.unit,
           state: resp.state,
           category: resp.category,
-          file: resp.file,
+          files: resp.files,
           categoryId: resp.categoryId,
           quantity: 1,
           total: resp.price,
@@ -85,6 +84,14 @@ export class FooterCartComponent implements OnInit, OnDestroy {
     this.selectProducts$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       this.selectProducts = resp;
       this.calculateTotalSum();
+    });
+
+    this.formStatusService.formStatus$.subscribe((isValid) => {
+      this.isFormValid = isValid;
+    });
+
+    this.formStatusService.order$.subscribe((order) => {
+      console.log(order);
     });
   }
 
@@ -112,7 +119,7 @@ export class FooterCartComponent implements OnInit, OnDestroy {
       unit: null,
       state: null,
       category: null,
-      file: [],
+      files: [],
       categoryId: null,
       quantity: [1, [Validators.required, Validators.min(1)]],
       total: [0, Validators.min(1)],
@@ -139,10 +146,23 @@ export class FooterCartComponent implements OnInit, OnDestroy {
 
   redirecToShipping() {
     this.router.navigate(['/shop/shipping-information']);
-/*     this.openWhatsAppChat(); */
+    /*     this.openWhatsAppChat(); */
   }
 
   openWhatsAppChat() {
+    if (!this.isFormValid) {
+      this.matDialog.open(FlayAlertComponent, {
+        width: 'auto',
+        data: {
+          title: '¡Error!',
+          type: 'error',
+          text: 'Por favor, llena todos los campos del formulario correctamente.',
+          saveButtonText: 'Ok',
+          hiddeCancelBtn: true,
+        },
+      });
+      return;
+    }
     // Supongamos que tienes los detalles del producto y precios en tu componente
     const productName = 'Nombre del Producto'; // Reemplaza con el nombre real del producto
     const productDescription = 'Descripción del producto'; // Reemplaza con la descripción real
@@ -207,7 +227,6 @@ export class FooterCartComponent implements OnInit, OnDestroy {
         hiddeCancelBtn: true,
       },
     });
-    this.router.navigate(['/shop/catalog']);
     const product = Object.assign({}, this.productForm.getRawValue());
     this.store.dispatch(new AddProductToCarAction(product));
   }

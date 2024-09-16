@@ -5,6 +5,8 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { IStore } from '../../../core/interfaces/store-config.interface';
 import { Store } from '@ngxs/store';
 import { StoreState } from '../../../core/store/store/store.state';
+import { IAddProductCarShop } from '../../../core/interfaces/product.interface';
+import { ProductState } from '../../../core/store/product/product.state';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,11 +21,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
   shop$: Observable<IStore> = new Observable();
   shop: IStore = null;
 
+  selectProducts$: Observable<IAddProductCarShop[]> = new Observable();
+  selectProducts: IAddProductCarShop[] = null;
+
   constructor(
     private router: Router,
     private sidebarService: SidebarService,
     private store: Store,
   ) {
+    this.selectProducts$ = this.store.select(ProductState.getShopCarProducts);
     this.shop$ = this.store.select(StoreState.getStore);
   }
 
@@ -42,6 +48,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   subscribeState() {
     this.shop$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       this.shop = resp;
+    });
+
+    this.selectProducts$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      this.selectProducts = resp;
     });
   }
 

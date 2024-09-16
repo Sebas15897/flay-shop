@@ -100,6 +100,7 @@ export interface IProduct {
   storeId: string;
   variants: IVarinats;
   files: any[];
+  unit: IUnit;
 }
 
 export interface IPayloadAddProduct {
@@ -124,4 +125,11 @@ export interface IAddProductCarShop {
   files: any[];
   quantity: number;
   total: number;
+  unit: IUnit;
+  isOpen?: boolean;
+}
+
+export interface IUnit {
+  id: number;
+  name: string;
 }

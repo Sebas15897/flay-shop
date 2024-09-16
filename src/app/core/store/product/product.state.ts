@@ -32,7 +32,6 @@ export class ProductStateModel {
     carProducts: [],
   },
 })
-
 @Injectable()
 export class ProductState {
   constructor(private productService: ProductService) {}
@@ -100,8 +99,14 @@ export class ProductState {
     { product }: AddProductToCarAction
   ) {
     const products = ctx.getState().carProducts;
+    const existingProduct = products?.find((p) => p?.id === product?.id);
     const updatedProducts = [...products, product];
-    return ctx.patchState({ carProducts: updatedProducts });
+
+    if (existingProduct) {
+      return ctx.dispatch(new IncrementProductQuantityAction(product?.id));
+    } else {
+      return ctx.patchState({ carProducts: updatedProducts });
+    }
   }
 
   @Action(RemoveProductFromCarAction)

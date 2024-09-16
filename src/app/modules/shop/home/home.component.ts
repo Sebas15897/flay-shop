@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.deliveryMethods$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       this.deliveryMethods = resp;
     });
+
   }
 
   redirectToCatalog() {

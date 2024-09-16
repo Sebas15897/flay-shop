@@ -1,5 +1,5 @@
-@import '../node_modules/bootstrap/scss/bootstrap';
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 
 /* You can add global styles to this file, and also import other style files */
 body {
@@ -14,4 +14,23 @@ body {
 
 body {
   margin: 0;
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 10px !important;
+}
+
+.btn.btn-primary {
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 18px;
+  text-align: center;
+  color: #010913 !important;
+  background: #aef8d9 !important;
+  border: none;
+  border-radius: 10px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

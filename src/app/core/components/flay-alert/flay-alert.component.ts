@@ -19,11 +19,7 @@ interface IAlertOptions {
 @Component({
   selector: 'app-flay-alert',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatDialogModule,
-  ],
+  imports: [CommonModule, MatButtonModule, MatDialogModule],
   templateUrl: './flay-alert.component.html',
   styleUrls: ['./flay-alert.component.scss'],
 })

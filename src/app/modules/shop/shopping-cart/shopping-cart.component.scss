@@ -84,11 +84,6 @@
   object-fit: contain;
 }
 
-.productInfo {
-  margin-right: 10px;
-  margin-left: -32px;
-}
-
 .productInfo h3 {
   font-size: 14px;
   margin-bottom: 0px;
@@ -102,11 +97,11 @@
 }
 
 .priceAndUnits {
+  width: 92%;
+  margin: auto;
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
-  column-gap: 34px;
-  margin-right: 14px;
 }
 
 .quantityProduct {
@@ -244,6 +239,10 @@
     width: 51px !important;
     height: 51px !important;
   }
+}
+
+.ghost-element {
+  width: 51px
 }
 
 .c-pointer {

@@ -1,9 +1,16 @@
-<div class="hero">
+<div
+  class="hero"
+  [style.background-image]="'url(' + shop?.urlPortraitPhoto + ')'"
+>
   <h1 class="heroTitle">{{ shop?.coverPhrase }}</h1>
   <p>{{ shop?.typeCommerce?.name }}</p>
 </div>
 <div class="productGrid">
-  <div class="product" *ngFor="let photo of shop?.catalogPhotos">
+  <div
+    class="product"
+    *ngFor="let photo of shop?.catalogPhotos"
+    (click)="redirectToCatalog()"
+  >
     <img [src]="photo?.uri" [alt]="photo?.id" />
   </div>
   <div class="catalogButton" (click)="redirectToCatalog()">

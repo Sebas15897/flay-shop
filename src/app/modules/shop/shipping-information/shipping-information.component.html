@@ -1,94 +1,124 @@
-<form [formGroup]="shippingForm" (ngSubmit)="onSubmit()">
-  <div class="topButtons">
-    <div class="buttonClient">
-      <img src="/assets/newClient.png" alt="" />
-      <span><b>Nuevo cliente</b></span>
-    </div>
-    <div class="buttonClient">
-      <img src="/assets/newClient.png" alt="" />
-      <span><b>Ya soy cliente</b></span>
-    </div>
+<div class="topButtons">
+  <div
+    class="buttonClient"
+    [ngClass]="{ active: !isNewClient }"
+    (click)="client(false)"
+  >
+    <img src="/assets/newClient.png" alt="" />
+    <span><b>Nuevo cliente</b></span>
   </div>
+  <div
+    class="buttonClient"
+    [ngClass]="{ active: isNewClient }"
+    (click)="client(true)"
+  >
+    <img src="/assets/newClient.png" alt="" />
+    <span><b>Ya soy cliente</b></span>
+  </div>
+</div>
 
-  <h2 class="title">Información de envío</h2>
-  <div class="card">
+<h2 class="title">Información de envío</h2>
+<div class="card">
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
     <div class="input" style="margin-top: 20px">
       <p>Nombres cliente</p>
-      <input
-        type="text"
-        formControlName="firstName"
-        placeholder="***********"
-      />
+      <input type="text" formControlName="name" placeholder="Ingrese nombres" />
     </div>
     <div class="input">
       <p>Apellidos</p>
-      <input type="text" formControlName="lastName" placeholder="***********" />
+      <input
+        type="text"
+        formControlName="lastName"
+        placeholder="Ingrese apellidos"
+      />
     </div>
     <div class="input">
       <p>Teléfono Whatsapp</p>
       <input
         type="text"
-        formControlName="whatsappPhone"
-        placeholder="***********"
+        formControlName="phone"
+        mask="000-000-0000"
+        placeholder="000-000-0000"
       />
     </div>
     <hr />
     <div class="input" style="margin-top: 20px">
       <p>Ciudad</p>
-      <select formControlName="city">
-        <option value="Bogotá">Bogotá</option>
-        <option value="Medellín">Medellín</option>
-        <option value="Barranquilla">Barranquilla</option>
+      <select formControlName="cityId">
+        <option [value]="null">Selecione una ciudad</option>
+        <option *ngFor="let city of cities" [value]="city.id">
+          {{ city.name }}
+        </option>
       </select>
     </div>
     <div class="input">
       <p>Dirección envío</p>
-      <input type="text" formControlName="address" placeholder="***********" />
+      <input
+        type="text"
+        formControlName="address"
+        placeholder="Ingrese su dirección"
+      />
     </div>
     <div class="input">
       <p>Apto / int / Torre</p>
-      <input
-        type="text"
-        formControlName="apartmentDetails"
-        placeholder="***********"
-      />
+      <input type="text" placeholder="Ingrese Apto / int / Torre" />
     </div>
     <div class="input">
       <p>Barrio (Opcional)</p>
       <input
-        type="text"
         formControlName="neighborhood"
-        placeholder="***********"
+        type="text"
+        placeholder="Ingrese su barrio"
       />
     </div>
-    <div class="input">
+  </form>
+  <form [formGroup]="orderForm">
+    <div class="input-container">
       <p>Programar envío</p>
-      <input type="date" formControlName="shippingDate" class="date" />
+      <mat-form-field>
+        <mat-label>Selecionar fecha</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dateScheduled"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
-  </div>
+  </form>
+</div>
 
+<form [formGroup]="orderForm">
   <h2 class="title">Información de pago</h2>
   <div class="card" style="margin-bottom: 160px">
     <div class="input" style="margin-top: 20px">
       <p>Estado de pago</p>
-      <select formControlName="paymentStatus">
-        <option value="Pagar ahora">Pagar ahora</option>
-        <option value="Contra entrega">Contra entrega</option>
-        <option value="Bono">Bono</option>
+      <select formControlName="paymentStateId">
+        <option [value]="null">Selecione un método de pago</option>
+        <option [value]="status.id" *ngFor="let status of orderStatus">
+          {{ status.name }}
+        </option>
       </select>
     </div>
     <div class="input">
       <p>Método de pago</p>
-      <select formControlName="paymentMethod">
-        <option value="Nequi">Transferencia Nequi</option>
-        <option value="Bancolombia">Transferencia Bancolombia</option>
-        <option value="Efectivo">Efectivo</option>
-        <option value="PSE">PSE</option>
+      <select formControlName="paymentMethodId">
+        <option [value]="null">Selecione un método de pago</option>
+        <option
+          *ngFor="let metodo of paymentMethods"
+          [value]="metodo?.paymentMethod?.id"
+        >
+          {{ metodo?.paymentMethod?.name }}
+        </option>
       </select>
     </div>
 
     <div class="nequiQr">
-      <img src="/assets/nequiQr.png" alt="" />
+      <img src="/assets/nequiQr.png" alt="nequiQr" />
       <span>3167428506</span>
     </div>
 
@@ -96,6 +126,7 @@
       <p>Comprobante</p>
       <label for="ticket" class="file"> Subir recibo o factura + </label>
       <input
+        #fileInput
         type="file"
         id="ticket"
         (change)="onFileChange($event)"
@@ -104,13 +135,27 @@
     </div>
 
     <div class="ticket">
-      <img src="/assets/editIcon.svg" alt="" class="editIcon" />
-      <img src="/assets/redTrash.svg" alt="" class="trashIcon" />
-      <img src="/assets/photoBackground.svg" alt="" />
+      <img
+        src="/assets/editIcon.svg"
+        alt="editIcon"
+        class="editIcon cursor-pointer"
+        (click)="editImage()"
+      />
+      <img
+        src="/assets/redTrash.svg"
+        alt="redTrash"
+        class="trashIcon cursor-pointer"
+        (click)="deleteImage()"
+      />
+      <img
+        [src]="selectedImageUrl"
+        alt="Comprobante seleccionado"
+        class="selected-image"
+      />
     </div>
   </div>
-
-  <button type="submit" [disabled]="shippingForm.invalid">
-    Enviar Información
-  </button>
 </form>
+
+<br />
+<br />
+<br />

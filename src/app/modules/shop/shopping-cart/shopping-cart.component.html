@@ -11,14 +11,16 @@
 <div class="products">
   <div class="product" *ngFor="let product of selectProducts">
     <div class="titleAndImage">
-      <img
-        class="imageProduct"
-        [src]="product?.files?.length ? product.files[0] : null"
-        alt="img-product"
-      />
-      <div class="productInfo">
-        <h3>{{ product?.name }}</h3>
-        <p>{{ product?.description }}</p>
+      <div class="d-flex gap-2">
+        <img
+          class="imageProduct"
+          [src]="product?.files?.length ? product.files[0].uri : null"
+          alt="img-product"
+        />
+        <div class="productInfo">
+          <h3>{{ product?.name }}</h3>
+          <p>{{ product?.unit?.name }}</p>
+        </div>
       </div>
       <img
         (click)="deleteProduct(product?.id)"
@@ -28,9 +30,12 @@
       />
     </div>
     <div class="priceAndUnits">
-      <span>{{
-        product?.total | currency : "COP" : "symbol-narrow" : "1.0-0"
-      }}</span>
+      <div class="d-flex gap-2">
+        <div class="ghost-element"></div>
+        <span>{{
+          product?.total | currency : "COP" : "symbol-narrow" : "1.0-0"
+        }}</span>
+      </div>
       <div class="quantityProduct">
         <div class="minus c-pointer" (click)="decrementQuantity(product?.id)">
           <img src="/assets/moreBlack.svg" alt="moreBlack" />
@@ -51,12 +56,14 @@
         <img
           src="/assets/arrowDown.png"
           alt="Toggle"
-          [ngClass]="{ descriptionOpen: isOpen }"
-          (click)="toggleDescription()"
-          [src]="isOpen ? '/assets/arrowUp.png' : '/assets/arrowDown.png'"
+          [ngClass]="{ descriptionOpen: product.isOpen }"
+          (click)="toggleDescription(product?.id)"
+          [src]="
+            product.isOpen ? '/assets/arrowUp.png' : '/assets/arrowDown.png'
+          "
         />
       </div>
-      <div class="descriptionContent" [ngClass]="{ open: isOpen }">
+      <div class="descriptionContent" [ngClass]="{ open: product.isOpen }">
         <!--    <div class="tags">
           <div class="tag">Talla 38</div>
           <div class="tag">Rojo</div>

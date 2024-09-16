@@ -1,19 +1,19 @@
 <div class="container">
   <img [src]="getAlertImg()" alt="warning-icon" />
-  <p class="title" *ngIf="data.type === 'error'">
-    {{ data.title ?? "¡Error!" }}
+  <p class="title" *ngIf="data?.type === 'error'">
+    {{ data?.title ?? "¡Error!" }}
   </p>
-  <p class="title" *ngIf="data.type === 'success'">
-    {{ data.title ?? "¡Proceso exitoso!" }}
+  <p class="title" *ngIf="data?.type === 'success'">
+    {{ data?.title ?? "¡Proceso exitoso!" }}
   </p>
-  <p class="title" *ngIf="data.type === 'warning'">
-    {{ data.title ?? "¡Advertencia!" }}
+  <p class="title" *ngIf="data?.type === 'warning'">
+    {{ data?.title ?? "¡Advertencia!" }}
   </p>
-  <p class="title" *ngIf="data.type === 'sale'">
-    {{ data.title ?? "Creación venta" }}
+  <p class="title" *ngIf="data?.type === 'sale'">
+    {{ data?.title ?? "Creación venta" }}
   </p>
   <p
-    *ngIf="data.type === 'error' && !data.text; else elseBlock"
+    *ngIf="data?.type === 'error' && !data?.text; else elseBlock"
     class="text-container"
   >
     Ha ocurrido un error. <br />

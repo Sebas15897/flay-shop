@@ -18,7 +18,6 @@ import {
 
 export class ShoppingCartComponent implements OnInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
-  isOpen: boolean = false;
 
   selectProducts$: Observable<IAddProductCarShop[]> = new Observable();
   selectProducts: IAddProductCarShop[] = null;
@@ -36,6 +35,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   subscribeState() {
     this.selectProducts$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       this.selectProducts = resp;
+      this.selectProducts = resp.map((product) => ({
+        ...product,
+        isOpen: false,
+      }));
       this.calculateTotalSum();
     });
   }
@@ -47,8 +50,12 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     );
   }
 
-  toggleDescription(): void {
-    this.isOpen = !this.isOpen;
+  toggleDescription(productId: string): void {
+    this.selectProducts = this.selectProducts.map((product) =>
+      product.id === productId
+        ? { ...product, isOpen: !product.isOpen }
+        : product
+    );
   }
 
   deleteProduct(productId: string | null) {

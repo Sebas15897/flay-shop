@@ -17,13 +17,14 @@ import {
 } from '../../../core/interfaces/product.interface';
 import { ProductState } from '../../../core/store/product/product.state';
 import { CategoryState } from '../../../core/store/category/category.state';
+import { IStore } from '../../../core/interfaces/store-config.interface';
+import { StoreState } from '../../../core/store/store/store.state';
 
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.scss'],
 })
-
 export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
 
@@ -39,6 +40,9 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   products$: Observable<IProduct[]> = new Observable();
   products: IProduct[] = [];
 
+  tenant$: Observable<IStore> = new Observable();
+  tenant: IStore = null;
+
   selectedOption: number | null = null;
   selectedSubOption: number | null = null;
 
@@ -47,6 +51,7 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private router: Router, private store: Store) {
     this.categories$ = this.store.select(CategoryState.getCategories);
     this.products$ = this.store.select(ProductState.getProducts);
+    this.tenant$ = this.store.select(StoreState.getStore);
   }
 
   ngOnInit() {
@@ -60,6 +65,13 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
           this.separateParentAndSubcategories(categories);
         this.categories = categories;
         this.parentCategories = parentCategories;
+      }
+    });
+
+    this.tenant$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      if (resp) {
+        console.log(resp);
+        this.tenant = resp;
       }
     });
   }

@@ -7,6 +7,7 @@ import { IStore } from '../../../core/interfaces/store-config.interface';
 import { Store } from '@ngxs/store';
 import { IAddProductCarShop } from '../../../core/interfaces/product.interface';
 import { ProductState } from '../../../core/store/product/product.state';
+import { StoreState } from '../../../core/store/store/store.state';
 
 @Component({
   selector: 'app-header',
@@ -33,9 +34,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private store: Store
   ) {
     this.selectProducts$ = this.store.select(ProductState.getShopCarProducts);
+    this.shop$ = this.store.select(StoreState.getStore);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.updateHeaderContent();
     this.router.events.subscribe(() => {
       this.updateHeaderContent();
@@ -47,6 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   subscribeState() {
     this.shop$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       this.shop = resp;
+      this.updateHeaderContent();
     });
 
     this.selectProducts$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
@@ -58,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const currentRoute = this.router.url;
 
     if (currentRoute.includes('/shop/home')) {
-      this.title = 'Adidas';
+      this.title = this.shop?.name;
       this.showBackButton = false;
       this.cartButton = true;
     } else if (currentRoute.includes('/shop/catalog')) {
@@ -78,7 +81,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.showBackButton = true;
       this.cartButton = false;
     } else {
-      this.title = 'Adidas';
+      this.title = this.shop?.name;
       this.showBackButton = true;
     }
   }

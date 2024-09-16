@@ -5,6 +5,7 @@ import { GetStoreInfoAction, SetStoreInfoAction } from './store.actions';
 import {
   ICategory,
   IDeliveryMethod,
+  IPaymentMethodToStore,
   IStore,
 } from '../../interfaces/store-config.interface';
 import { tap } from 'rxjs/operators';
@@ -39,6 +40,13 @@ export class StoreState {
   @Selector()
   static getStoreCategories(state: StoreStateModel): ICategory[] | null {
     return state?.store?.category ?? null;
+  }
+
+  @Selector()
+  static getStorePaymentMethods(
+    state: StoreStateModel
+  ): IPaymentMethodToStore[] | null {
+    return state?.store?.paymentMethodToStore ?? null;
   }
 
   @Action(GetStoreInfoAction)

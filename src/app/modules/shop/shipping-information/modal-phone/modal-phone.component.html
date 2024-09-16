@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <form [formGroup]="formPhone" class="p-2">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-end">
+        <img
+          src="assets/close.svg"
+          class="close"
+          alt="close"
+          (click)="close()"
+        />
+      </div>
+      <div
+        class="col-12 d-flex flex-column justify-content-center align-items-center text-center gap-2"
+      >
+        <img width="24px" src="assets/phone.svg" alt="phone" />
+        <p class="description">
+          Ingresa tu numero celular para identificarte como cliente
+        </p>
+        <input
+          type="text"
+          formControlName="phone"
+          mask="000-000-0000"
+          placeholder="000-000-0000"
+        />
+        <div class="d-flex gap-2 w-100">
+          <button class="btn btn-dark" (click)="close()">Cancelar</button>
+          <button
+            class="btn btn-primary"
+            [disabled]="formPhone.invalid"
+            (click)="searchClient()"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
