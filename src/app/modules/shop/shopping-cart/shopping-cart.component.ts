@@ -52,7 +52,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   toggleDescription(productId: string): void {
     this.selectProducts = this.selectProducts.map((product) =>
-      product.id === productId
+      product.productId === productId
         ? { ...product, isOpen: !product.isOpen }
         : product
     );

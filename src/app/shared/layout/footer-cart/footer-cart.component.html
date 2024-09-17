@@ -59,7 +59,7 @@
         {{ totalShop | currency : "COP" : "symbol-narrow" : "1.0-0" }}</span
       >
     </div>
-    <div *ngIf="shipping" class="total" (click)="openWhatsAppChat()">
+    <div *ngIf="shipping" class="total" (click)="finishSale()">
       <span>Terminar compra</span>
       <img
         src="/assets/whatsAppIcon.svg"

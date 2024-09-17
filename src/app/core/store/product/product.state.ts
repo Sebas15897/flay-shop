@@ -99,11 +99,11 @@ export class ProductState {
     { product }: AddProductToCarAction
   ) {
     const products = ctx.getState().carProducts;
-    const existingProduct = products?.find((p) => p?.id === product?.id);
+    const existingProduct = products?.find((p) => p?.productId === product?.productId);
     const updatedProducts = [...products, product];
 
     if (existingProduct) {
-      return ctx.dispatch(new IncrementProductQuantityAction(product?.id));
+      return ctx.dispatch(new IncrementProductQuantityAction(product?.productId));
     } else {
       return ctx.patchState({ carProducts: updatedProducts });
     }
@@ -117,7 +117,7 @@ export class ProductState {
     const currentProducts = ctx.getState().carProducts;
 
     const updatedProducts = currentProducts.filter(
-      (product) => product.id !== productId
+      (product) => product.productId !== productId
     );
 
     return ctx.patchState({ carProducts: updatedProducts });
@@ -135,7 +135,7 @@ export class ProductState {
   ) {
     const state = ctx.getState();
     const updatedProducts = state.carProducts.map((product) => {
-      if (product.id === productId) {
+      if (product.productId === productId) {
         return {
           ...product,
           quantity: product.quantity + 1,
@@ -155,7 +155,7 @@ export class ProductState {
   ) {
     const state = ctx.getState();
     const updatedProducts = state.carProducts.map((product) => {
-      if (product.id === productId && product.quantity > 1) {
+      if (product.productId === productId && product.quantity > 1) {
         return {
           ...product,
           quantity: product.quantity - 1,

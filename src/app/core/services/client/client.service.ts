@@ -7,13 +7,15 @@ import {
   IClient,
   IClientInfoPayload,
 } from '../../interfaces/client.interface';
+import { Store } from '@ngxs/store';
+import { StoreState } from '../../store/store/store.state';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class ClientService {
-  constructor(private httpClient: HttpClient, private appConfig: AppConfig) {}
+  constructor(private httpClient: HttpClient, private appConfig: AppConfig, private store: Store) {}
 
   getClientInfo(payload: IClientInfoPayload): Observable<IClient> {
     return this.httpClient.get<IClient>(
@@ -23,8 +25,8 @@ export class ClientService {
 
   addNewCLients(
     payload: IAddClientPayload,
-    tenantId: string
   ): Observable<IClient> {
+    const tenantId: string = this.store.selectSnapshot(StoreState.getStore)?.subdomain;
     return this.httpClient.post<IClient>(
       `${this.appConfig.tenants.urls.base}/${tenantId}/client/add`,
       payload

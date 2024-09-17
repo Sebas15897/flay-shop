@@ -3,6 +3,9 @@
 */
 
 export interface IProduct {
+  productId?: string;
+  variantId?: string;
+  quantity?: number;
   id: string;
   referenceId: string;
   name: string;
@@ -108,7 +111,7 @@ export interface IPayloadAddProduct {
 }
 
 export interface IAddProductCarShop {
-  id: string;
+  productId: string;
   name: string;
   categoryId: number;
   enabled: boolean;

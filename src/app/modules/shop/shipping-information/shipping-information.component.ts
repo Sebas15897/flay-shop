@@ -17,21 +17,22 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalPhoneComponent } from './modal-phone/modal-phone.component';
 import { IClient } from '../../../core/interfaces/client.interface';
 import { ClientState } from '../../../core/store/client/client.state';
-import { GetOrderStatusAction } from '../../../core/store/order/order.actions';
+import { CreateNewOrderAction, GetOrderStatusAction } from '../../../core/store/order/order.actions';
 import { IOrderStatus } from '../../../core/interfaces/order-status';
 import { OrdersState } from '../../../core/store/order/order.state';
 import {
   IAddProductCarShop,
-  IProduct,
 } from '../../../core/interfaces/product.interface';
 import { ProductState } from '../../../core/store/product/product.state';
 import { FormStatusService } from '../../../core/services/form-order-status/form-order-status.service';
+import { AddNewClientAction } from '../../../core/store/client/client.actions';
 
 @Component({
   selector: 'app-shipping-information',
   templateUrl: './shipping-information.component.html',
   styleUrls: ['./shipping-information.component.scss'],
 })
+
 export class ShippingInformationComponent implements OnInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
@@ -46,6 +47,7 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
   selectProducts: IAddProductCarShop[] = null;
 
   client$: Observable<IClient> = new Observable();
+  newClient$: Observable<IClient> = new Observable();
 
   orderStatus$: Observable<IOrderStatus[]> = new Observable();
   orderStatus: IOrderStatus[] = [];
@@ -74,9 +76,10 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
     this.cities$ = this.store.select(CityState.getCities);
     this.paymentMethods$ = this.store.select(StoreState.getStorePaymentMethods);
     this.client$ = this.store.select(ClientState.getClient);
+    this.newClient$ = this.store.select(ClientState.getNewClient);
     this.orderStatus$ = this.store.select(OrdersState.getorders);
     this.selectProducts$ = this.store.select(ProductState.getShopCarProducts);
-    this.storeId = this.store.selectSnapshot(StoreState.getStore)?.subdomain;
+    this.storeId = this.store.selectSnapshot(StoreState.getStore)?.id;
     this.clientForm.patchValue({
       storeId: this.storeId,
     });
@@ -120,7 +123,7 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
     });
 
     this.client$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
-      if (resp) {
+      if (resp && resp.id) {
         this.orderForm.patchValue({
           clientId: resp.id,
         });
@@ -135,6 +138,28 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
           cityId: resp.city.id,
           storeId: resp.storeId,
         });
+      }
+    });
+
+    this.newClient$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      if (resp && resp?.id) {
+        this.orderForm.patchValue({
+          clientId: resp.id,
+        });
+        this.clientForm.patchValue({
+          name: resp?.name,
+          lastName: resp?.lastName,
+          neighborhood: resp?.neighborhood,
+          email: resp?.email,
+          phone: resp?.phone,
+          identification: resp?.identification,
+          cityId: resp.city?.id,
+          storeId: resp?.storeId,
+        });
+
+        const orderForm = Object.assign({}, this.orderForm.getRawValue());
+
+        this.store.dispatch(new CreateNewOrderAction(orderForm));
       }
     });
 
@@ -159,9 +184,21 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
       this.selectProducts.forEach((product) => {
         this.productsFormArray.push(this.createProductFormGroup(product));
       });
-
-      console.log(this.productsFormArray);
     });
+
+    this.formStatusService.finish$
+      .pipe(takeUntil(this.destroy))
+      .subscribe((resp) => {
+        if (resp) {
+          const formClient = Object.assign({}, this.clientForm.getRawValue());
+          formClient.cityId = Number(formClient.cityId);
+          if (formClient && formClient.clientId) {
+
+          } else {
+            this.store.dispatch(new AddNewClientAction(formClient));
+          }
+        }
+      });
   }
 
   get productsFormArray(): FormArray {
@@ -170,10 +207,12 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
 
   createProductFormGroup(product: IAddProductCarShop): FormGroup {
     return this.fb.group({
-      id: [product.id],
+      productId: [product.productId],
       name: [product.name],
       quantity: [product.quantity],
       price: [product.price],
+      categoryId: [product.categoryId],
+      variants: [product.variants],
     });
   }
 
@@ -213,8 +252,8 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
       discount: [0, Validators.min(0)],
       notes: [null, Validators.maxLength(255)],
       dateScheduled: [null],
-      scheduleId: [null],
-      orderStateId: [null],
+      scheduleId: [0],
+      orderStateId: [0],
       paymentStateId: [null, [Validators.required]],
       paymentMethodId: [null, [Validators.required]],
       voucherUrl: [null],

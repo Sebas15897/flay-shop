@@ -23,13 +23,13 @@ export class AppComponent implements OnDestroy {
     private store: Store,
     private ngxSpinnerService: NgxSpinnerService
   ) {
-    this.store.dispatch(new GetStoreInfoAction(environment.tenant_test_url));
-    this.store.dispatch(
-      new GetProductCategoriesByShopAction(environment.tenant_test_url)
-    );
-    this.store.dispatch(
-      new GetProductsByStoreAction(environment.tenant_test_url)
-    );
+    const domain =
+      window.location.hostname === 'localhost'
+        ? environment.tenant_test_url
+        : window.location.hostname;
+    this.store.dispatch(new GetStoreInfoAction(domain));
+    this.store.dispatch(new GetProductCategoriesByShopAction(domain));
+    this.store.dispatch(new GetProductsByStoreAction(domain));
     this.showLoading$ = this.store.select(LoadingState.showLoading);
     this.getLoadingText$ = this.store.select(LoadingState.getTextLoading);
     this.subscribeState();

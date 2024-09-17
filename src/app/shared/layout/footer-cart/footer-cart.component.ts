@@ -12,16 +12,24 @@ import { AddProductToCarAction } from '../../../core/store/product/product.actio
 import { MatDialog } from '@angular/material/dialog';
 import { FlayAlertComponent } from '../../../core/components/flay-alert/flay-alert.component';
 import { FormStatusService } from '../../../core/services/form-order-status/form-order-status.service';
+import {
+  IOrderPayloadWhatsapp,
+  IOrderResponse,
+} from '../../../core/interfaces/order-status';
+import { StoreState } from '../../../core/store/store/store.state';
+import { OrdersState } from '../../../core/store/order/order.state';
 
 @Component({
   selector: 'app-footer-cart',
   templateUrl: './footer-cart.component.html',
   styleUrls: ['./footer-cart.component.scss'],
 })
+
 export class FooterCartComponent implements OnInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
   product$: Observable<IProduct> = new Observable();
   product: IProduct = null;
+  irOderCreated$: Observable<IOrderResponse> = new Observable();
   selectProducts$: Observable<IAddProductCarShop[]> = new Observable();
   selectProducts: IAddProductCarShop[] = null;
   cartButtons: boolean = true;
@@ -29,8 +37,9 @@ export class FooterCartComponent implements OnInit, OnDestroy {
   shipping: boolean = false;
   productForm: FormGroup;
   totalShop: number = 0;
-  // Se usa para validar si la orden es valida.
+
   isFormValid: boolean = false;
+  order: IOrderPayloadWhatsapp = null;
 
   constructor(
     private router: Router,
@@ -42,6 +51,7 @@ export class FooterCartComponent implements OnInit, OnDestroy {
     this.productForm = this.createForm();
     this.product$ = this.store.select(ProductState.getSelectedProduct);
     this.selectProducts$ = this.store.select(ProductState.getShopCarProducts);
+    this.irOderCreated$ = this.store.select(OrdersState.getCreateOrderResponse);
   }
 
   ngOnInit() {
@@ -57,7 +67,8 @@ export class FooterCartComponent implements OnInit, OnDestroy {
     this.product$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
       if (resp) {
         this.productForm.patchValue({
-          id: resp.id,
+          productId: resp.id,
+          variantId: null,
           referenceId: resp.referenceId,
           name: resp.name,
           enabled: resp.enabled,
@@ -86,12 +97,22 @@ export class FooterCartComponent implements OnInit, OnDestroy {
       this.calculateTotalSum();
     });
 
-    this.formStatusService.formStatus$.subscribe((isValid) => {
-      this.isFormValid = isValid;
-    });
+    this.formStatusService.formStatus$
+      .pipe(takeUntil(this.destroy))
+      .subscribe((isValid) => {
+        this.isFormValid = isValid;
+      });
 
-    this.formStatusService.order$.subscribe((order) => {
-      console.log(order);
+    this.formStatusService.order$
+      .pipe(takeUntil(this.destroy))
+      .subscribe((order) => {
+        this.order = order;
+      });
+
+    this.irOderCreated$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
+      if (resp) {
+        this.openWhatsAppChat(resp);
+      }
     });
   }
 
@@ -104,7 +125,8 @@ export class FooterCartComponent implements OnInit, OnDestroy {
 
   createForm(): FormGroup {
     return this.fb.group({
-      id: null,
+      productId: null,
+      variantId: null,
       referenceId: null,
       name: null,
       enabled: null,
@@ -146,10 +168,9 @@ export class FooterCartComponent implements OnInit, OnDestroy {
 
   redirecToShipping() {
     this.router.navigate(['/shop/shipping-information']);
-    /*     this.openWhatsAppChat(); */
   }
 
-  openWhatsAppChat() {
+  finishSale() {
     if (!this.isFormValid) {
       this.matDialog.open(FlayAlertComponent, {
         width: 'auto',
@@ -163,36 +184,66 @@ export class FooterCartComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    // Supongamos que tienes los detalles del producto y precios en tu componente
-    const productName = 'Nombre del Producto'; // Reemplaza con el nombre real del producto
-    const productDescription = 'Descripción del producto'; // Reemplaza con la descripción real
-    const quantity = 1; // Reemplaza con la cantidad real
-    const unitPrice = 10000; // Precio unitario
-    const subtotal = 10000; // Subtotal
-    const total = 10000; // Total del pedido
+    this.formStatusService.finishSale(true);
+  }
 
-    // Crear el mensaje en el formato deseado
+  openWhatsAppChat(order: IOrderResponse) {
+    const store = this.store.selectSnapshot(StoreState.getStore);
+
+
+    const productList = order.productToOrders
+      .map(
+        (product) => `
+🔘 ${product.product.name}
+      Categoría: ${product.product.category.name}
+      Varíante: N/A
+      Costo: $${(product.product.price * product.quantity).toLocaleString(
+        'es-CO'
+      )}
+—————————————`
+      )
+      .join('\n');
+
     const message = `
-    🛒 *Carrito de Compras*
+      ✋🏻Hola, Soy ${order.client.name} ${
+      order.client.lastName
+    }  quiero concretar un pedido en ${ store.name } con estos productos:
 
-    *Producto:* ${productName}
-    *Cantidad:* ${quantity}
-    *Descripción:* ${productDescription}
-    *Precio Unitario:* $${unitPrice.toLocaleString('es-CO')}
+      🟢 Productos
+      ————————————-
+      ${productList}
 
-    ---
+      📅 Fecha de envío : ${new Date(order.dateScheduled).toLocaleDateString(
+        'es-CO',
+        {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }
+      )}
 
-    *Subtotal:* $${subtotal.toLocaleString('es-CO')}
-    *Total del Pedido:* $${total.toLocaleString('es-CO')}
+      🚚 Costo de domicilio: $${order.deliveryCost.toLocaleString('es-CO')}
 
-    Gracias por tu compra. Si tienes alguna pregunta, no dudes en contactarnos.
-        `;
-    const formattedPhone = `573244692094`; // Asegúrate de agregar el código del país si no está incluido
+      ☑ Cliente: ${order.client.name} ${order.client.lastName}
+      ☑ Celular: ${order.client.phone}
+      ☑ Ciudad: ${order.client.city.name}
+      ☑ Dirección: ${order.address}
+      ☑ Info de dirección: Apto 377 Torre 20
+      ☑ Barrio: ${this.order.client.neighborhood}
+
+      ——————————————-
+
+      💳 Medio de pago: ${order.paymentMethod.name}
+      🟩 Estado de pago: ${order.paymentState.name}
+      💰 TOTAL: $${order.total.toLocaleString('es-CO')}
+      `;
+
+    const formattedPhone = `57${store.phone}`;
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(
       message
     )}`;
 
-    // Abrir el chat de WhatsApp
     window.open(whatsappUrl, '_blank');
   }
 

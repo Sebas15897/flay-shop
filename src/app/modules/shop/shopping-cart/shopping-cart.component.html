@@ -23,7 +23,7 @@
         </div>
       </div>
       <img
-        (click)="deleteProduct(product?.id)"
+        (click)="deleteProduct(product?.productId)"
         class="c-pointer"
         src="/assets/trash.png"
         alt="trash"
@@ -37,7 +37,7 @@
         }}</span>
       </div>
       <div class="quantityProduct">
-        <div class="minus c-pointer" (click)="decrementQuantity(product?.id)">
+        <div class="minus c-pointer" (click)="decrementQuantity(product?.productId)">
           <img src="/assets/moreBlack.svg" alt="moreBlack" />
         </div>
         <div class="counter">
@@ -46,7 +46,7 @@
           >
           <span class="units">Unidades</span>
         </div>
-        <div class="plus c-pointer" (click)="incrementQuantity(product?.id)">
+        <div class="plus c-pointer" (click)="incrementQuantity(product?.productId)">
           <img src="/assets/plusGreenIcon.svg" alt="plusGreenIcon" />
         </div>
       </div>
@@ -57,7 +57,7 @@
           src="/assets/arrowDown.png"
           alt="Toggle"
           [ngClass]="{ descriptionOpen: product.isOpen }"
-          (click)="toggleDescription(product?.id)"
+          (click)="toggleDescription(product?.productId)"
           [src]="
             product.isOpen ? '/assets/arrowUp.png' : '/assets/arrowDown.png'
           "

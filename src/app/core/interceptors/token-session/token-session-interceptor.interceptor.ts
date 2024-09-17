@@ -14,12 +14,12 @@ import {
   LoadingHiddeAction,
   LoadingShowAction,
 } from '../../store/loading/loading.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { FlayAlertComponent } from '../../components/flay-alert/flay-alert.component';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
-  constructor(
-    private store: Store,
-  ) {}
+  constructor(private store: Store, private dialog: MatDialog) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -34,12 +34,16 @@ export class LoadingInterceptor implements HttpInterceptor {
         }
       }),
       catchError((error: HttpErrorResponse) => {
-/*         this.sweetAlertHelper.createCustomAlert({
-          title: 'Error',
-          text: 'Ha ocurrido un error. Si el problema persiste, por favor, contacta con soporte técnico.',
-          icon: 'error',
-        }); */
-
+        this.dialog.open(FlayAlertComponent, {
+          width: 'auto',
+          data: {
+            title: '¡Error!',
+            type: 'error',
+            text: error.error.message,
+            saveButtonText: 'Ok',
+            hiddeCancelBtn: true,
+          },
+        });
         return throwError(() => error);
       }),
       finalize(() => {

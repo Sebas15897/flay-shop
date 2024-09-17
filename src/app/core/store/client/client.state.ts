@@ -5,6 +5,7 @@ import {
   GetClientInfoAction,
   AddNewClientAction,
   SetClientAction,
+  SetNewClientAction,
 } from './client.actions';
 import { IClient } from '../../interfaces/client.interface';
 import { tap } from 'rxjs/operators';
@@ -13,12 +14,14 @@ import { MatDialog } from '@angular/material/dialog';
 
 export class ClientStateModel {
   client: IClient | null;
+  newClient: IClient | null;
 }
 
 @State<ClientStateModel>({
   name: 'client',
   defaults: {
     client: null,
+    newClient: null,
   },
 })
 @Injectable()
@@ -32,6 +35,12 @@ export class ClientState {
   static getClient(state: ClientStateModel): IClient | null {
     return state.client;
   }
+
+  @Selector()
+  static getNewClient(state: ClientStateModel): IClient | null {
+    return state.newClient;
+  }
+
 
   @Action(GetClientInfoAction)
   getClientInfo(
@@ -66,11 +75,16 @@ export class ClientState {
   @Action(AddNewClientAction)
   addNewClient(
     ctx: StateContext<ClientStateModel>,
-    { payload, tenantId }: AddNewClientAction
+    { payload }: AddNewClientAction
   ) {
-    return this.clientService.addNewCLients(payload, tenantId).pipe(
+    return this.clientService.addNewCLients(payload).pipe(
       tap((client: IClient) => {
-        ctx.dispatch(new SetClientAction(client));
+        if (client && client.id) {
+          console.log(client, 'cliente agregado'); // Asegúrate de que el cliente tenga un `id`
+          ctx.patchState({
+            newClient: client,  // Actualiza el estado
+          });
+        }
       })
     );
   }
@@ -78,5 +92,10 @@ export class ClientState {
   @Action(SetClientAction)
   setClient(ctx: StateContext<ClientStateModel>, { client }: SetClientAction) {
     ctx.patchState({ client });
+  }
+
+  @Action(SetNewClientAction)
+  setNewClient(ctx: StateContext<ClientStateModel>, { newClient }: SetNewClientAction) {
+    ctx.patchState({ newClient });
   }
 }

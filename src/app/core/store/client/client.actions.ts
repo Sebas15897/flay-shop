@@ -11,10 +11,15 @@ export class GetClientInfoAction {
 
 export class AddNewClientAction {
   static readonly type = '[Client] Add New Client';
-  constructor(public payload: IAddClientPayload, public tenantId: string) {}
+  constructor(public payload: IAddClientPayload) {}
 }
 
 export class SetClientAction {
   static readonly type = '[Client] Set Client';
   constructor(public client: IClient) {}
+}
+
+export class SetNewClientAction {
+  static readonly type = '[Client] Set New Client';
+  constructor(public newClient: IClient) {}
 }
