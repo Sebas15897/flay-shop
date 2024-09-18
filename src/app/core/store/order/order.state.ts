@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { State, Selector, Action, StateContext } from '@ngxs/store';
+import { Injectable, NgZone } from '@angular/core';
+import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { CreateNewOrderAction, GetOrderStatusAction } from './order.actions';
 import { OrderService } from '../../services/order/order.service';
-import {
-  IOrderResponse,
-  IOrderStatus,
-} from '../../interfaces/order-status';
+import { IOrderResponse, IOrderStatus } from '../../interfaces/order-status';
+import { ClearProductAction } from '../product/product.actions';
+import { Router } from '@angular/router';
+import { GetProductCategoriesByShopAction } from '../category/category.actions';
+import { StoreState } from '../store/store.state';
+import { FlayAlertComponent } from '../../components/flay-alert/flay-alert.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface OrdersStateModel {
   ordersStatus: IOrderStatus[];
@@ -20,10 +23,15 @@ export interface OrdersStateModel {
     createOrden: null,
   },
 })
-
 @Injectable()
 export class OrdersState {
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private router: Router,
+    private ngZone: NgZone,
+    private store: Store,
+    private matDialog: MatDialog
+  ) {}
 
   @Selector()
   static getorders(state: OrdersStateModel): IOrderStatus[] {
@@ -53,6 +61,26 @@ export class OrdersState {
       tap((resp) => {
         ctx.patchState({
           createOrden: resp.data,
+        });
+        ctx.dispatch(new ClearProductAction());
+        this.ngZone.run(() => {
+          this.matDialog.open(FlayAlertComponent, {
+            width: 'auto',
+            data: {
+              title: '¡Orden Exitosa!',
+              type: 'success',
+              text: 'La orden se ha generado con éxito. Puedes continuar tu compra a través de WhatsApp.',
+              saveButtonText: 'Ok',
+              hiddeCancelBtn: true,
+            },
+          });
+          this.router.navigate(['/shop/home'], {
+            replaceUrl: true,
+          });
+          const tenant = this.store.selectSnapshot(
+            StoreState.getStore
+          )?.subdomain;
+          ctx.dispatch(new GetProductCategoriesByShopAction(tenant));
         });
       })
     );

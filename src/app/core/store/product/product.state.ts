@@ -11,12 +11,15 @@ import {
   RemoveProductFromCarAction,
   DecrementProductQuantityAction,
   IncrementProductQuantityAction,
+  ClearProductAction,
 } from './product.actions';
 import {
   IAddProductCarShop,
   IProduct,
 } from '../../interfaces/product.interface';
 import { tap } from 'rxjs/operators';
+import { FlayAlertComponent } from '../../components/flay-alert/flay-alert.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export class ProductStateModel {
   products: IProduct[];
@@ -34,7 +37,10 @@ export class ProductStateModel {
 })
 @Injectable()
 export class ProductState {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private matDialog: MatDialog
+  ) {}
 
   @Selector()
   static getProducts(state: ProductStateModel): IProduct[] {
@@ -99,14 +105,59 @@ export class ProductState {
     { product }: AddProductToCarAction
   ) {
     const products = ctx.getState().carProducts;
-    const existingProduct = products?.find((p) => p?.productId === product?.productId);
-    const updatedProducts = [...products, product];
+    const existingProduct = products?.find(
+      (p) => p?.productId === product?.productId
+    );
 
     if (existingProduct) {
-      return ctx.dispatch(new IncrementProductQuantityAction(product?.productId));
+      const totalQuantity = existingProduct.quantity + product.quantity;
+      if (totalQuantity > product.stock) {
+        this.errorStock();
+        return;
+      }
+      this.sucessMessage();
+      return ctx.dispatch(
+        new IncrementProductQuantityAction(
+          product?.productId,
+          product?.quantity
+        )
+      );
     } else {
+      if (product.quantity > product.stock) {
+        this.errorStock();
+        return;
+      }
+      const updatedProducts = [...products, product];
+      this.sucessMessage();
       return ctx.patchState({ carProducts: updatedProducts });
     }
+  }
+
+  sucessMessage() {
+    this.matDialog.open(FlayAlertComponent, {
+      width: 'auto',
+      data: {
+        title: 'Agregar al carrito',
+        type: 'success',
+        text: `¡Producto agregado con éxito!`,
+        saveButtonText: 'Ok',
+        hiddeCancelBtn: true,
+      },
+    });
+  }
+
+  errorStock() {
+    this.matDialog.open(FlayAlertComponent, {
+      width: 'auto',
+      data: {
+        title: 'Stock insuficiente',
+        type: 'error',
+        text: 'No puedes agregar más unidades de las disponibles en stock.',
+        saveButtonText: 'Ok',
+        hiddeCancelBtn: true,
+      },
+    });
+    return;
   }
 
   @Action(RemoveProductFromCarAction)
@@ -131,15 +182,17 @@ export class ProductState {
   @Action(IncrementProductQuantityAction)
   incrementProductQuantity(
     ctx: StateContext<ProductStateModel>,
-    { productId }: IncrementProductQuantityAction
+    { productId, quantity }: IncrementProductQuantityAction
   ) {
     const state = ctx.getState();
     const updatedProducts = state.carProducts.map((product) => {
       if (product.productId === productId) {
+        const newQuantity = product.quantity + quantity;
+
         return {
           ...product,
-          quantity: product.quantity + 1,
-          total: product.price * (product.quantity + 1),
+          quantity: newQuantity,
+          total: product.price * newQuantity,
         };
       }
       return product;
@@ -166,5 +219,10 @@ export class ProductState {
     });
 
     ctx.patchState({ carProducts: updatedProducts });
+  }
+
+  @Action(ClearProductAction)
+  ClearProductAction(ctx: StateContext<ProductStateModel>) {
+    ctx.patchState({ selectedProduct: null, carProducts: [] });
   }
 }

@@ -123,13 +123,19 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate([`/shop/product/${product.id}`]);
   }
 
-  filterCategories(): ICategory[] {
-    if (!this.searchTerm) return this.parentCategories;
+  filterProducts(): ICategory[] {
+    if (!this.searchTerm) {
+      return this.categories;
+    }
 
-    return this.parentCategories.filter((category) =>
-      category.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    return this.categories.map(category => ({
+      ...category,
+      product: category.product.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    })).filter(category => category.product.length > 0);
   }
+
 
   ngOnDestroy() {
     this.destroy.next(true);

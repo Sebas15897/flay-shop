@@ -67,7 +67,7 @@ export class OrderService {
     formData.append('products', JSON.stringify(filteredProducts));
 
     if (order.voucherUrl) {
-      formData.append('voucherUrl', order.voucherUrl);
+      formData.append('image', order.voucherUrl);
     }
 
     return this.httpClient.post<ICreateOrdenResponse>(

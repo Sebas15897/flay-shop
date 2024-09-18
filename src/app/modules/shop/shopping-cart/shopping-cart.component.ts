@@ -66,7 +66,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   incrementQuantity(productId: string) {
-    this.store.dispatch(new IncrementProductQuantityAction(productId));
+    this.store.dispatch(new IncrementProductQuantityAction(productId, 1));
   }
 
   decrementQuantity(productId: string) {

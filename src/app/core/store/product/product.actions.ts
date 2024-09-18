@@ -40,10 +40,15 @@ export class ClearCarProductsAction {
 
 export class IncrementProductQuantityAction {
   static readonly type = '[Product] Increment Product Quantity';
-  constructor(public productId: string) {}
+  constructor(public productId: string, public quantity: number) {}
 }
 
 export class DecrementProductQuantityAction {
   static readonly type = '[Product] Decrement Product Quantity';
   constructor(public productId: string) {}
+}
+
+export class ClearProductAction {
+  static readonly type = '[Product] Clear Product State';
+  constructor() {}
 }

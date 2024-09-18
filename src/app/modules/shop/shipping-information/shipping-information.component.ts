@@ -13,16 +13,17 @@ import { ICity } from '../../../core/interfaces/city.interface';
 import { CityState } from '../../../core/store/city/city.state';
 import { IPaymentMethodToStore } from '../../../core/interfaces/store-config.interface';
 import { StoreState } from '../../../core/store/store/store.state';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalPhoneComponent } from './modal-phone/modal-phone.component';
 import { IClient } from '../../../core/interfaces/client.interface';
 import { ClientState } from '../../../core/store/client/client.state';
-import { CreateNewOrderAction, GetOrderStatusAction } from '../../../core/store/order/order.actions';
+import {
+  CreateNewOrderAction,
+  GetOrderStatusAction,
+} from '../../../core/store/order/order.actions';
 import { IOrderStatus } from '../../../core/interfaces/order-status';
 import { OrdersState } from '../../../core/store/order/order.state';
-import {
-  IAddProductCarShop,
-} from '../../../core/interfaces/product.interface';
+import { IAddProductCarShop } from '../../../core/interfaces/product.interface';
 import { ProductState } from '../../../core/store/product/product.state';
 import { FormStatusService } from '../../../core/services/form-order-status/form-order-status.service';
 import { AddNewClientAction } from '../../../core/store/client/client.actions';
@@ -32,7 +33,6 @@ import { AddNewClientAction } from '../../../core/store/client/client.actions';
   templateUrl: './shipping-information.component.html',
   styleUrls: ['./shipping-information.component.scss'],
 })
-
 export class ShippingInformationComponent implements OnInit, OnDestroy {
   private destroy: Subject<boolean> = new Subject<boolean>();
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
@@ -62,11 +62,13 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
 
   totalShop = 0;
 
+  matDialogFn: any = null;
+
   constructor(
     private fb: FormBuilder,
     private store: Store,
     private matDialog: MatDialog,
-    private formStatusService: FormStatusService
+    private formStatusService: FormStatusService,
   ) {
     this.orderForm = this.createForm();
     this.clientForm = this.createClientForm();
@@ -138,6 +140,7 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
           cityId: resp.city.id,
           storeId: resp.storeId,
         });
+        this.matDialogFn?.close();
       }
     });
 
@@ -193,7 +196,8 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
           const formClient = Object.assign({}, this.clientForm.getRawValue());
           formClient.cityId = Number(formClient.cityId);
           if (formClient && formClient.clientId) {
-
+            const orderForm = Object.assign({}, this.orderForm.getRawValue());
+            this.store.dispatch(new CreateNewOrderAction(orderForm));
           } else {
             this.store.dispatch(new AddNewClientAction(formClient));
           }
@@ -283,18 +287,10 @@ export class ShippingInformationComponent implements OnInit, OnDestroy {
     this.fileInput.nativeElement.click();
   }
 
-  onSubmit() {
-    if (this.orderForm.valid) {
-      console.log(this.orderForm.value);
-    } else {
-      console.log('Formulario no válido');
-    }
-  }
-
   client(isNewClient: boolean) {
     this.isNewClient = isNewClient;
     if (isNewClient) {
-      this.matDialog.open(ModalPhoneComponent, {
+      this.matDialogFn = this.matDialog.open(ModalPhoneComponent, {
         width: '325px',
         height: 'auto',
       });

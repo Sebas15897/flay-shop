@@ -19,7 +19,7 @@
     <input
       type="text"
       id="searcher"
-      placeholder="Buscar por categoría"
+      placeholder="Buscar por producto"
       class="searchInput"
       [(ngModel)]="searchTerm"
     />
@@ -41,7 +41,7 @@
   </div>
 </div>
 <div class="productsContainer">
-  <ng-container *ngFor="let category of filterCategories(); let i = index">
+  <ng-container *ngFor="let category of filterProducts(); let i = index">
     <div
       class="containerCategoryDiv"
       *ngIf="category?.product?.length"
@@ -62,3 +62,4 @@
     </div>
   </ng-container>
 </div>
+

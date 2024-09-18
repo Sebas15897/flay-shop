@@ -254,8 +254,22 @@ export class FooterCartComponent implements OnInit, OnDestroy {
   increaseQuantity() {
     const currentQuantity = this.productForm.get('quantity')?.value;
     const value = this.productForm.get('total').value;
-    this.productForm.patchValue({ quantity: currentQuantity + 1 });
-    this.productForm.patchValue({ total: value + this.product.price });
+
+    if (currentQuantity < this.product?.stock) {
+      this.productForm.patchValue({ quantity: currentQuantity + 1 });
+      this.productForm.patchValue({ total: value + this.product.price });
+    } else {
+      this.matDialog.open(FlayAlertComponent, {
+        width: 'auto',
+        data: {
+          title: 'Stock insuficiente',
+          type: 'error',
+          text: 'No puedes agregar más unidades de las disponibles en stock.',
+          saveButtonText: 'Ok',
+          hiddeCancelBtn: true,
+        },
+      });
+    }
   }
 
   decreaseQuantity() {
@@ -268,16 +282,20 @@ export class FooterCartComponent implements OnInit, OnDestroy {
   }
 
   addProduct() {
-    this.matDialog.open(FlayAlertComponent, {
-      width: 'auto',
-      data: {
-        title: 'Agregar al carrito',
-        type: 'success',
-        text: `¡Producto agregado con éxito!`,
-        saveButtonText: 'Ok',
-        hiddeCancelBtn: true,
-      },
-    });
+    const currentQuantity = this.productForm.get('quantity')?.value;
+    if (this.product?.stock === 0 || currentQuantity > this.product?.stock) {
+      this.matDialog.open(FlayAlertComponent, {
+        width: 'auto',
+        data: {
+          title: 'Stock insuficiente',
+          type: 'error',
+          text: 'No puedes agregar más unidades de las disponibles en stock.',
+          saveButtonText: 'Ok',
+          hiddeCancelBtn: true,
+        },
+      });
+      return;
+    }
     const product = Object.assign({}, this.productForm.getRawValue());
     this.store.dispatch(new AddProductToCarAction(product));
   }

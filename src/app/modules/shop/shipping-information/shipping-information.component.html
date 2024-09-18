@@ -19,7 +19,7 @@
 
 <h2 class="title">Información de envío</h2>
 <div class="card">
-  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="clientForm">
     <div class="input" style="margin-top: 20px">
       <p>Nombres cliente</p>
       <input type="text" formControlName="name" placeholder="Ingrese nombres" />

@@ -36,13 +36,7 @@ export class ModalPhoneComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.client$.pipe(takeUntil(this.destroy)).subscribe((resp) => {
-      if (resp) {
-        this.matDialogRef.close();
-      }
-    });
-  }
+  ngOnInit() {}
 
   searchClient() {
     const form = Object.assign({}, this.formPhone.getRawValue());
