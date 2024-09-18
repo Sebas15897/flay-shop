@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
-import { CreateNewOrderAction, GetOrderStatusAction } from './order.actions';
+import { ClearOrdenStateAction, CreateNewOrderAction, GetOrderStatusAction } from './order.actions';
 import { OrderService } from '../../services/order/order.service';
 import { IOrderResponse, IOrderStatus } from '../../interfaces/order-status';
 import { ClearProductAction } from '../product/product.actions';
@@ -84,5 +84,14 @@ export class OrdersState {
         });
       })
     );
+  }
+
+  @Action(ClearOrdenStateAction)
+  ClearOrdenStateAction(
+    ctx: StateContext<OrdersStateModel>,
+  ) {
+    ctx.patchState({
+      createOrden: null,
+    });
   }
 }

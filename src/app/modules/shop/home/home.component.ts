@@ -7,6 +7,7 @@ import {
 } from '../../../core/interfaces/store-config.interface';
 import { Store } from '@ngxs/store';
 import { StoreState } from '../../../core/store/store/store.state';
+import { ClearOrdenStateAction } from '../../../core/store/order/order.actions';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private store: Store) {
     this.deliveryMethods$ = this.store.select(StoreState.getdeliveryMethods);
     this.shop$ = this.store.select(StoreState.getStore);
+    this.store.dispatch(new ClearOrdenStateAction());
   }
 
   ngOnInit() {
